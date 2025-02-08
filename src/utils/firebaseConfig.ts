@@ -1,0 +1,22 @@
+import { initializeApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAo5iVUyfEfY2fA79fULKMKz0vFdCQi1xE",
+    authDomain: "vibez-2120e.firebaseapp.com",
+    databaseURL: "https://vibez-2120e.firebaseio.com",
+    projectId: "vibez-2120e",
+    storageBucket: "vibez-2120e.appspot.com",
+    messagingSenderId: "902893329566",
+    appId: "1:902893329566:web:7e9484bd398275a603af8f",
+    measurementId: "G-846YPSLLY3"
+  };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+export const auth = getAuth(app);
+export const googleProvider = new GoogleAuthProvider();
+export const registerWithEmail = createUserWithEmailAndPassword;
+export const loginWithEmail = signInWithEmailAndPassword;
+export const loginWithGoogle = signInWithPopup;

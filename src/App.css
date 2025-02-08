@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('https://db.onlinewebfonts.com/c/0f569977f67b6b286869107511db80fd?family=Freizeit+Trial+Light');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap');
+@import url('https://fonts.cdnfonts.com/css/freizeit-120');
+@import url('https://db.onlinewebfonts.com/c/07c4cd97848694a40cb5fa3d17dca6a2?family=Freizeit+Trial');
+@import url('https://fonts.cdnfonts.com/css/general-sans');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.font-syne {
+  font-family: 'Syne';
+}
+.font-space {
+  font-family: 'Space Grotesk';
+}
+.font-DMSans {
+  font-family: 'DM Sans';
+}
+.font-FreizetTrial {
+  font-family: 'Freizeit Trial';
+}
+.font-generalSans {
+  font-family: 'General Sans', sans-serif;
+}
+body {
+  font-family: 'Freizeit Trial', sans-serif;
+}
+.slide-bg {
+  background: url('../src/static/img/slide_bg.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.slide-bg-mobile {
+  background: url('../src/static/img/slide_bg_mobile.svg');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.buttonportfolio:hover {
+  border-radius: 1.9375rem;
+  border: 2px solid #20a357;
+  background: linear-gradient(
+    267deg,
+    #010101 0%,
+    rgba(18, 31, 40, 1) 0.01%,
+    rgba(1, 1, 1, 0.62) 103.13%
+  );
+  box-shadow: 6px -6px 12px 0px rgba(18, 29, 36, 0.25) inset,
+    -6px -6px 9px 0px rgba(13, 27, 37, 0.25) inset, 0px 4px 4px 0px rgba(99, 99, 99, 0.08);
+  backdrop-filter: blur(3.5px);
+}
+.buttonportfolio {
+  border: 2px solid #20a357;
+}
+.backgroundGenius {
+  border-radius: 2rem;
+  border: 2px solid hwb(0 100% 0% / 0.288);
+  /* opacity: 0.5; */
+  background: radial-gradient(
+    107.32% 141.42% at 0% 0%,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  box-shadow: -5px -5px 250px 0px rgba(255, 255, 255, 0.02) inset;
+  /* backdrop-filter: blur(21px); */
+}
+.firstStep {
+  border-radius: 1.5rem;
+  background: rgba(114, 76, 48, 0.33);
+  box-shadow: 0px 1.303px 52.136px 0px rgba(227, 222, 255, 0.2) inset,
+    0px 5.214px 23.461px 0px rgba(114, 76, 48, 0.3) inset,
+    0px 127.733px 130.34px -62.563px rgba(114, 76, 48, 0.3) inset,
+    0px -106.879px 88.631px -83.418px rgba(114, 76, 48, 0.3) inset,
+    0px 9.124px 14.337px -5.214px rgba(255, 255, 255, 0) inset,
+    0px 50.833px 72.99px -46.922px rgba(255, 255, 255, 0.28) inset;
+  backdrop-filter: blur(58.652984619140625px);
+}
+.secondStep {
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.26);
+  box-shadow: 0px 1.303px 52.136px 0px rgba(227, 222, 255, 0.2) inset,
+    0px 5.214px 23.461px 0px rgba(255, 255, 255, 0.3) inset,
+    0px 127.733px 130.34px -62.563px rgba(255, 255, 255, 0.3) inset,
+    0px -106.879px 88.631px -83.418px rgba(255, 255, 255, 0.3) inset,
+    0px 9.124px 14.337px -5.214px rgba(255, 255, 255, 0) inset,
+    0px 50.833px 72.99px -46.922px rgba(255, 255, 255, 0.28) inset;
+  backdrop-filter: blur(58.652984619140625px);
+}
+.thirdStep {
+  border-radius: 1.5rem;
+  background: rgba(76, 48, 114, 0.4);
+  box-shadow: 0px 1.303px 52.136px 0px rgba(227, 222, 255, 0.2) inset,
+    0px 5.214px 23.461px 0px rgba(154, 146, 210, 0.3) inset,
+    0px 127.733px 130.34px -62.563px rgba(202, 172, 255, 0.3) inset,
+    0px -106.879px 88.631px -83.418px rgba(96, 68, 144, 0.3) inset,
+    0px 9.124px 14.337px -5.214px rgba(255, 255, 255, 0) inset,
+    0px 50.833px 72.99px -46.922px rgba(255, 255, 255, 0.28) inset;
+  backdrop-filter: blur(58.652984619140625px);
+}
+.firstimage {
+  justify-self: self-end;
+}
+.geyniusfooter {
+  background: linear-gradient(180deg, #214e34 0%, #20a357 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.socialname {
+  display: none;
+}
+.socialdiv {
+  border-radius: 100%;
+  transition: all 0.3s;
+}
+.socialdiv:hover {
+  border-radius: 5px;
+}
+.socialdiv:hover .socialname {
+  display: block;
+}
+
+.socialname {
+  transition: all 0.3s;
+}
+.radialAbout {
+  width: 63.375rem;
+  height: 63.375rem;
+  flex-shrink: 0;
+  border-radius: 63.375rem;
+  opacity: 0.6;
+  background: radial-gradient(50% 50% at 50% 50%, #214e34 0%, rgba(1, 64, 28, 0) 100%);
+}
+
+/* Container holding the slider content */
+.slider-container {
+  width: 100%; /* Adjust width as needed */
+  overflow: hidden;
+}
+
+/* Define the slanted text class */
+.slanted-text {
+  transform: rotate(-10deg); /* Adjust the skew angle as desired */
+  transition: transform 0.3s ease-in-out; /* Optional: Add a smooth transition */
+}
+
+/* @media (max-width: 640px) { */
+.swiper-pagination,
+.swiper-pagination-clickable,
+.swiper-pagination-bullets,
+.swiper-pagination-horizontal {
+  display: none;
+}
+/* } */
