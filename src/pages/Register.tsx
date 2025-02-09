@@ -36,7 +36,7 @@ const Register: React.FC = () => {
         email,
       });
 
-      navigate("/dashboard");
+      navigate("/dashboard/home");
     } catch (error: any) {
       console.error("Error registering:", error);
       toast.error(error.message || "Registration failed!"); // Show error toast
@@ -58,7 +58,7 @@ const Register: React.FC = () => {
         email: user.email,
       });
 
-      navigate("/dashboard");
+      navigate("/dashboard/home");
     } catch (error: any) {
       console.error("Error signing in with Google:", error);
       toast.error(error.message || "Google sign-in failed!"); // Show error toast

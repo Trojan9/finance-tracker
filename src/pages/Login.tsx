@@ -19,7 +19,7 @@ const Login: React.FC = () => {
     setLoadingLogin(true); // Show spinner for email login
     try {
       await loginWithEmail(auth, email, password);
-      navigate("/dashboard");
+      navigate("/dashboard/home");
     } catch (error: any) {
       console.error("Error logging in:", error);
       toast.error(error.message || "Login failed!"); // Show error message
@@ -32,7 +32,7 @@ const Login: React.FC = () => {
     setLoadingGoogle(true); // Show spinner for Google sign-in
     try {
       await loginWithGoogle(auth, googleProvider);
-      navigate("/dashboard");
+      navigate("/dashboard/home");
     } catch (error: any) {
       console.error("Error signing in with Google:", error);
       toast.error(error.message || "Google sign-in failed!"); // Show error message

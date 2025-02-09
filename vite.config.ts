@@ -10,7 +10,7 @@ export default defineConfig({
   css: {
     postcss: './postcss.config.js',
   },
-  base: "./", // ✅ Ensures correct asset paths in production
+  base: "/",
   build: {
     assetsInlineLimit: 0, // ✅ Forces Vite to copy assets instead of inlining them
     outDir: "dist",
