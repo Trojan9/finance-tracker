@@ -95,7 +95,7 @@ const Sidebar: React.FC = () => {
             }
           >
             <FaWallet />
-            <span>Expenses</span>
+            <span>Transaction</span>
           </NavLink>
           <NavLink
             to="/dashboard/trips"
