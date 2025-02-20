@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 import {
   FaPlaneDeparture,
   FaPlane,
@@ -39,9 +40,11 @@ import {
   Tooltip,
 } from "recharts";
 import countries from "../../constants/countries";
+import { useNavigate } from "react-router-dom";
 
 const TripsPage: React.FC = () => {
   const [trips, setTrips] = useState<any[]>([]);
+  const [user, setUser] = useState(auth.currentUser);
   const [newTrip, setNewTrip] = useState({
     destination: "",
     date: "",
@@ -52,10 +55,24 @@ const TripsPage: React.FC = () => {
   const [selectedTrip, setSelectedTrip] = useState<any | null>(null); // Selected trip details
   const [uploading, setUploading] = useState(false);
   const [uploadingString, setUploadingString] = useState<string | null>(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    // ✅ Ensure auth state is initialized before running Firestore queries
+    const unsubscribeAuth = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser); // ✅ Store the authenticated user
+      } else {
+        console.error("User not authenticated.");
+        navigate("/login");
+        // router.push("/login"); // ✅ Redirect to login page if no user
+      }
+    });
 
+    return () => unsubscribeAuth(); // ✅ Cleanup listener on unmount
+  }, []);
   useEffect(() => {
     const fetchTrips = async () => {
-      const user = auth.currentUser;
+      
       if (!user) return;
       const q = query(collection(db, "trips"), where("userId", "==", user.uid));
       const querySnapshot = await getDocs(q);

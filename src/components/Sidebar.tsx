@@ -7,14 +7,21 @@ import {
   FaCog,
   FaPhone,
   FaSignOutAlt,
+  FaBriefcase,
+  FaChevronUp,
+  FaChevronDown,
+  FaBoxOpen,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../utils/firebaseConfig"; // Assuming firebaseConfig exports initialized `auth` and `db`
 import { doc, getDoc } from "firebase/firestore";
 const Sidebar: React.FC = () => {
-  const [userName, setUserName] = useState<string>(localStorage.getItem("userName") || "User");
+  const [userName, setUserName] = useState<string>(
+    localStorage.getItem("userName") || "User"
+  );
   const [userInitials, setUserInitials] = useState<string>("U");
+  const [isSchedulingOpen, setIsSchedulingOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async (userId: string) => {
@@ -28,7 +35,7 @@ const Sidebar: React.FC = () => {
           setUserInitials(
             fullName
               .split(" ")
-              .map((word:any) => word[0])
+              .map((word: any) => word[0])
               .join("")
               .toUpperCase()
           );
@@ -58,20 +65,17 @@ const Sidebar: React.FC = () => {
     });
   };
   return (
-
     <div className="min-h-screen bg-gray-900 text-white w-64 p-4 flex flex-col justify-between">
       <div>
         {/* Circular Avatar with Initials */}
         <div className="flex items-center space-x-4 mb-8">
           <div className="w-12 h-12 bg-blue-500 text-white flex items-center justify-center rounded-full text-lg font-bold">
-          {userInitials}
+            {userInitials}
           </div>
           <div>
             <h3 className="text-lg font-bold">{userName}</h3>
           </div>
         </div>
-
-
 
         {/* Navigation Links */}
         <nav className="space-y-6">
@@ -108,8 +112,9 @@ const Sidebar: React.FC = () => {
             <FaPlane />
             <span>Trips</span>
           </NavLink>
-          <NavLink
-            to="/dashboard/approvals"
+
+          {/* <NavLink
+            to="/dashboard/appointments"
             className={({ isActive }) =>
               `flex items-center space-x-4 hover:text-blue-500 ${
                 isActive ? "text-blue-500" : "text-gray-300"
@@ -119,6 +124,60 @@ const Sidebar: React.FC = () => {
 
             <FaClipboardCheck />
             <span>Appointments</span>
+          </NavLink> */}
+
+
+          <div>
+            <button
+              onClick={() => setIsSchedulingOpen(!isSchedulingOpen)}
+              className="flex items-center space-x-4 w-full text-left hover:text-blue-500"
+            >
+              <FaClipboardCheck />
+              <span>Scheduling</span>
+              {isSchedulingOpen ? (
+                <FaChevronUp className="ml-auto" />
+              ) : (
+                <FaChevronDown className="ml-auto" />
+              )}
+            </button>
+            {isSchedulingOpen && (
+              <div className="pl-6 space-y-2 mt-2">
+                <NavLink
+                  to="/dashboard/appointments"
+                  className={({ isActive }) =>
+                    `flex items-center space-x-4 p-2 rounded-md hover:text-blue-500 ${
+                      isActive ? "text-blue-500" : "text-gray-300"
+                    }`
+                  }
+                >
+                  <FaClipboardCheck />
+                  <span>Appointments</span>
+                </NavLink>
+                <NavLink
+                  to="/dashboard/services"
+                  className={({ isActive }) =>
+                    `flex items-center space-x-4 p-2 rounded-md hover:text-blue-500 ${
+                      isActive ? "text-blue-500" : "text-gray-300"
+                    }`
+                  }
+                >
+                  <FaBoxOpen />
+                  <span>Services</span>
+                </NavLink>
+              </div>
+            )}
+          </div>
+
+          <NavLink
+            to="/dashboard/portfolio"
+            className={({ isActive }) =>
+              `flex items-center space-x-4 hover:text-blue-500 ${
+                isActive ? "text-blue-500" : "text-gray-300"
+              }`
+            }
+          >
+            <FaBriefcase />
+            <span>Portfolio</span>
           </NavLink>
           <NavLink
             to="/dashboard/settings"

@@ -17,6 +17,7 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState(auth.currentUser);
+  
   const [isSubmitting, setIsSubmitting] = useState(false); // Loading state for button
   const [newTransaction, setNewTransaction] = useState({
     details: "",
@@ -180,6 +181,7 @@ let userId = auth.currentUser!.uid;
 
     return () => unsubscribeAuth(); // ✅ Cleanup listener on unmount
   }, []);
+
   useEffect(() => {
     if (!user) {
       console.error("User not authenticated.");
