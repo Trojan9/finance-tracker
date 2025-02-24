@@ -70,6 +70,7 @@ const TripsPage: React.FC = () => {
 
     return () => unsubscribeAuth(); // ✅ Cleanup listener on unmount
   }, []);
+
   useEffect(() => {
     const fetchTrips = async () => {
       
@@ -84,7 +85,7 @@ const TripsPage: React.FC = () => {
       setLoading(false);
     };
     fetchTrips();
-  }, []);
+  }, [user]);
 
   const handleAddTrip = async () => {
     setAdding(true);

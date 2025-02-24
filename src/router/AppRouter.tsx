@@ -6,6 +6,7 @@ import LandingPage from "../pages/LandingPage";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import ForgotPassword from "../pages/ForgotPassword";
+import Slug from "../components/portfolio/slug";
 
 const AppRouter: React.FC = () => {
   return (
@@ -21,7 +22,8 @@ const AppRouter: React.FC = () => {
         {/* Grouped Dashboard Routes */}
         <Route path="/dashboard/*" element={<DashboardPage />} />
         
-        <Route path="*" element={<h1>Not Found</h1>} />
+        <Route path="*" element={<Slug/>} />
+
       </Routes>
   );
 };

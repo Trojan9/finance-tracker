@@ -46,6 +46,7 @@ const Login: React.FC = () => {
     <div className="min-h-screen bg-gray-900 flex items-center justify-center relative overflow-hidden">
       <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
       
+      
       {/* Background Spheres */}
       <img src={asset1} alt="Decorative Sphere" className="absolute top-10 left-10 w-40 h-40 opacity-50" />
       <img src={asset2} alt="Decorative Sphere" className="absolute top-40 right-20 w-24 h-24 opacity-30" />

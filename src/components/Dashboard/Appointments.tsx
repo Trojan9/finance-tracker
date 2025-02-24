@@ -35,7 +35,8 @@ const Appointments: React.FC = () => {
       setAppointments(data);
     };
     fetchAppointments();
-  }, [selectedDate]);
+  }, [selectedDate,user]);
+
 
   const getCurrentTimePosition = () => {
     const now = new Date();

@@ -9,7 +9,7 @@ import Trips from "../components/Dashboard/Trips";
 import Settings from "../components/Dashboard/Settings";
 import Support from "../components/Dashboard/Support";
 import Appointments from "../components/Dashboard/Appointments";
-import Portfolio from "../components/Dashboard/Portfolio";
+import Portfolio from "../components/portfolio/Portfolio";
 import Services from "../components/Scheduling/Services";
 
 const DashboardPage: React.FC = () => {
