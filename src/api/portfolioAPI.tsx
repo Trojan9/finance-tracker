@@ -8,6 +8,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
+import {  toast } from "react-toastify";
 import { db } from "../utils/firebaseConfig";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -45,6 +46,7 @@ export const getFileFromBlobURL = async (blobUrl: string, fileName: string): Pro
 };
 
 export const savePortfolio = async (portfolio: any, uid: string) => {
+  try {
   portfolio.uid = uid; // Store UID in portfolio
    // Upload project images first (check if it's a blob or a URL)
    for (const project of portfolio.projects) {
@@ -69,6 +71,11 @@ export const savePortfolio = async (portfolio: any, uid: string) => {
       await updateDoc(doc(db, "portfolio", docs.id), portfolio);
     });
   }
+  toast.success("Portfolio saved successfully!");
+} catch (error:any) {
+  toast.error(`Error: ${error.toString()}`);
+  console.error("Error saving portfolio:", error);
+}
 };
 
 export const uploadImageFile = async (path: string, file: any) => {

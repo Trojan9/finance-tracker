@@ -244,23 +244,15 @@ let userId = auth.currentUser!.uid;
 }, [user]);
 
   return (
-    <div className="p-6 md:p-8 bg-gray-900 text-white relative">
-        {/* Upload Button */}
-        <div className="flex justify-end mb-4">
+<div className="h-screen overflow-y-auto p-4 md:p-8 bg-gray-900 text-white relative">
+
+    {/* Upload Button */}
+    <div className="flex justify-end mb-4">
       <label className="bg-blue-600 px-4 py-2 rounded-lg shadow-md text-sm cursor-pointer flex items-center space-x-2 hover:bg-blue-500">
         {isLoading ? (
-          <svg
-            className="animate-spin h-5 w-5 text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
+          <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 0116 0H4z"
-            ></path>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0116 0H4z"></path>
           </svg>
         ) : (
           <FaUpload />
@@ -269,92 +261,56 @@ let userId = auth.currentUser!.uid;
         <input type="file" accept="application/pdf" className="hidden" onChange={handleUpload} />
       </label>
     </div>
-        {/* <div className="flex justify-end mb-4">
-        <label className="bg-blue-600 px-4 py-2 rounded-lg shadow-md text-sm cursor-pointer flex items-center space-x-2 hover:bg-blue-500">
-          <FaUpload />
-          <span>Upload Bank Statement</span>
-          <input type="file" accept="application/pdf" className="hidden" onChange={handleFileUpload} />
-        </label>
-      </div> */}
-      {/* Pending Tasks and Recent Expenses */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        {/* Pending Tasks */}
-        <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-          <h3 className="text-lg font-bold mb-4">Pending Tasks</h3>
-          <ul className="space-y-4 text-sm text-gray-400">
-            <li className="flex justify-between items-center">
-              <span className="flex items-center space-x-2">
-                <FaCheck className="text-blue-500" />
-                <span>Pending Approvals</span>
-              </span>
-              <span>5</span>
-            </li>
-            <li className="flex justify-between items-center">
-              <span className="flex items-center space-x-2">
-                <FaPlane className="text-purple-500" />
-                <span>New Trips Registered</span>
-              </span>
-              <span>1</span>
-            </li>
-            <li className="flex justify-between items-center">
-              <span className="flex items-center space-x-2">
-                <FaFileAlt className="text-pink-500" />
-                <span>Unreported Expenses</span>
-              </span>
-              <span>4</span>
-            </li>
-            <li className="flex justify-between items-center">
-              <span className="flex items-center space-x-2">
-                <FaMoneyBill className="text-green-500" />
-                <span>Upcoming Expenses</span>
-              </span>
-              <span>0</span>
-            </li>
-          </ul>
-        </div>
 
-        {/* Recent Expenses */}
-        <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-      <h3 className="text-lg font-bold mb-4">Recent Expenses</h3>
-      <div className="text-sm text-gray-400 space-y-4">
-        {recentExpenses.length === 0 ? (
-          <p>No recent expenses found.</p>
-        ) : (
-          recentExpenses.map((expense,index) => (
-            <div key={index} className="flex justify-between">
-              <span>{expense.category}</span>
-              <span className="text-gray-200">£{expense.amount.toFixed(2)}</span>
-            </div>
-          ))
-        )}
+    {/* Pending Tasks and Recent Expenses */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      {/* Pending Tasks */}
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h3 className="text-lg font-bold mb-4">Pending Tasks</h3>
+        <ul className="space-y-4 text-sm text-gray-400">
+          {["Pending Approvals", "New Trips Registered", "Unreported Expenses", "Upcoming Expenses"].map((task, index) => (
+            <li key={index} className="flex justify-between items-center">
+              <span className="flex items-center space-x-2">
+                <FaCheck className={`text-${index === 0 ? 'blue' : index === 1 ? 'purple' : index === 2 ? 'pink' : 'green'}-500`} />
+                <span>{task}</span>
+              </span>
+              <span>{[5, 1, 4, 0][index]}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Recent Expenses */}
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h3 className="text-lg font-bold mb-4">Recent Expenses</h3>
+        <div className="text-sm text-gray-400 space-y-4">
+          {recentExpenses.length === 0 ? (
+            <p>No recent expenses found.</p>
+          ) : (
+            recentExpenses.map((expense, index) => (
+              <div key={index} className="flex justify-between">
+                <span>{expense.category}</span>
+                <span className="text-gray-200">£{expense.amount.toFixed(2)}</span>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
-      </div>
 
+    {/* Quick Access */}
+    <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+      {["+ New Transaction", "+ New Appointment", "+ Create Report", "+ Create Trip"].map((label, index) => (
+        <button key={index} onClick={() => index === 0 && setIsModalOpen(true)} className={`px-4 py-2 rounded-lg shadow-md text-sm flex items-center space-x-2 ${['bg-purple-600 hover:bg-purple-500', 'bg-blue-600 hover:bg-blue-500', 'bg-green-600 hover:bg-green-500', 'bg-red-600 hover:bg-red-500'][index]}`}>
+          {[<FaClipboard />, <FaReceipt />, <FaFile />, <FaPlaneDeparture />][index]}
+          <span>{label}</span>
+        </button>
+      ))}
+    </div>
 
-      {/* Quick Access */}
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-6 flex justify-between items-center space-x-4">
-        <button onClick={() => setIsModalOpen(true)} className="bg-purple-600 px-4 py-2 rounded-lg shadow-md text-sm hover:bg-purple-500 flex items-center space-x-2">
-          <FaClipboard />
-          <span>+ New Transaction</span>
-        </button>
-      
-        <button className="bg-blue-600 px-4 py-2 rounded-lg shadow-md text-sm hover:bg-blue-500 flex items-center space-x-2">
-          <FaReceipt />
-          <span>+ New Appointment</span>
-        </button>
-        <button className="bg-green-600 px-4 py-2 rounded-lg shadow-md text-sm hover:bg-green-500 flex items-center space-x-2">
-          <FaFile />
-          <span>+ Create Report</span>
-        </button>
-        <button className="bg-red-600 px-4 py-2 rounded-lg shadow-md text-sm hover:bg-red-500 flex items-center space-x-2">
-          <FaPlaneDeparture />
-          <span>+ Create Trip</span>
-        </button>
-      </div>
-
-     {/* Spending Per Day Chart */}
-     <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-6">
+    {/* Spending Charts */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
         <h3 className="text-lg font-bold mb-4">Day-to-Day Spending This Month</h3>
         <ResponsiveContainer width="100%" height={250}>
           <LineChart data={transactions}>
@@ -365,106 +321,56 @@ let userId = auth.currentUser!.uid;
           </LineChart>
         </ResponsiveContainer>
       </div>
-      {/* Category-wise Spending Chart */}
+
       <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-      <h3 className="text-lg font-bold mb-4">Category-Wise Spending This Month</h3>
-      <ResponsiveContainer width="100%" height={250}>
-        <BarChart data={categoryData}>
-          <XAxis dataKey="category" stroke="#ccc" />
-          <YAxis stroke="#ccc" />
-          <Tooltip content={<CustomTooltip />} />
-          <Bar dataKey="amount" fill="#10B981" />
-        </BarChart>
-      </ResponsiveContainer>
+        <h3 className="text-lg font-bold mb-4">Category-Wise Spending This Month</h3>
+        <ResponsiveContainer width="100%" height={250}>
+          <BarChart data={categoryData}>
+            <XAxis dataKey="category" stroke="#ccc" />
+            <YAxis stroke="#ccc" />
+            <Tooltip content={<CustomTooltip />} />
+            <Bar dataKey="amount" fill="#10B981" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
 
-   {/* Modal Overlay - Opens on Top of Page */}
-   {isModalOpen && (
-        <div className="fixed inset-0 bg-transparent bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-96 animate-fadeIn">
-            {/* Modal Header */}
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold">Add New Transaction</h3>
-              <button onClick={() => setIsModalOpen(false)}>
-                <FaTimes className="text-red-500 text-lg" />
-              </button>
-            </div>
+    {/* Modal Overlay */}
+    {isModalOpen && (
+      <div className="fixed inset-0 bg-transparent bg-opacity-50 flex justify-center items-center z-50 px-4 sm:px-0">
+        <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full sm:w-96 animate-fadeIn">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-bold">Add New Transaction</h3>
+            <button onClick={() => setIsModalOpen(false)}>
+              <FaTimes className="text-red-500 text-lg" />
+            </button>
+          </div>
 
-            {/* Transaction Form */}
-            <input
-              type="text"
-              name="details"
-              value={newTransaction.details}
-              onChange={handleInputChange}
-              placeholder="Transaction details"
-              className="w-full p-2 mb-3 border rounded bg-gray-700 text-white"
-            />
+          <input type="text" name="details" value={newTransaction.details} onChange={handleInputChange} placeholder="Transaction details" className="w-full p-2 mb-3 border rounded bg-gray-700 text-white" />
+          <input type="number" name="amount" min="0" value={newTransaction.amount} onChange={handleInputChange} placeholder="Amount" className="w-full p-2 mb-3 border rounded bg-gray-700 text-white" />
 
-            <input
-              type="number"
-              name="amount"
-              min="0"
-              value={newTransaction.amount}
-              onChange={handleInputChange}
-              placeholder="Amount"
-              className="w-full p-2 mb-3 border rounded bg-gray-700 text-white"
-            />
+          <select name="type" value={newTransaction.type} onChange={handleInputChange} className="w-full p-2 mb-3 border rounded bg-gray-700 text-white">
+            <option value="debit">Expense</option>
+            <option value="credit">Income</option>
+          </select>
 
-            {/* Transaction Type Dropdown */}
-            <select
-              name="type"
-              value={newTransaction.type}
-              onChange={handleInputChange}
-              className="w-full p-2 mb-3 border rounded bg-gray-700 text-white"
-            >
-              <option value="debit">Expense</option>
-              <option value="credit">Income</option>
-            </select>
+          <select name="category" value={newTransaction.category} onChange={handleInputChange} className="w-full p-2 mb-3 border rounded bg-gray-700 text-white">
+            {categoryOptions.map((category, index) => (
+              <option key={index} value={category}>{category}</option>
+            ))}
+          </select>
 
-            {/* Category Dropdown */}
-            <select
-              name="category"
-              value={newTransaction.category}
-              onChange={handleInputChange}
-              className="w-full p-2 mb-3 border rounded bg-gray-700 text-white"
-            >
-              {categoryOptions.map((category, index) => (
-                <option key={index} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-
-            {/* Action Buttons */}
-            <div className="flex justify-end space-x-2">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="bg-gray-600 px-4 py-2 rounded-lg shadow-md hover:bg-gray-500"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAddTransaction}
-                disabled={isSubmitting}
-                className={`px-4 py-2 rounded-lg shadow-md flex items-center space-x-2 ${
-                  isSubmitting ? "bg-gray-500 cursor-not-allowed" : "bg-green-600 hover:bg-green-500"
-                }`}
-              >
-                {isSubmitting ? (
-                  <>
-                    <FaSpinner className="animate-spin" />
-                    <span>Processing...</span>
-                  </>
-                ) : (
-                  <span>Add Transaction</span>
-                )}
-              </button>
-            </div>
+          <div className="flex justify-end space-x-2">
+            <button onClick={() => setIsModalOpen(false)} className="bg-gray-600 px-4 py-2 rounded-lg shadow-md hover:bg-gray-500">Cancel</button>
+            <button onClick={handleAddTransaction} disabled={isSubmitting} className={`px-4 py-2 rounded-lg shadow-md flex items-center space-x-2 ${isSubmitting ? "bg-gray-500 cursor-not-allowed" : "bg-green-600 hover:bg-green-500"}`}>
+              {isSubmitting ? (<><FaSpinner className="animate-spin" /><span>Processing...</span></>) : (<span>Add Transaction</span>)}
+            </button>
           </div>
         </div>
-      )}
-  
       </div>
+    )}
+  </div>
+
   
   );
 };

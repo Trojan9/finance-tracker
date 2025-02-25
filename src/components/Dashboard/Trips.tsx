@@ -150,7 +150,8 @@ const TripsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-6 md:p-8 bg-gray-900 text-white relative">
+
+    <div className="h-screen overflow-y-auto p-6 md:p-8 bg-gray-900 text-white relative">
       <h1 className="text-2xl font-bold mb-6 flex items-center">
         <FaPlaneDeparture className="mr-2" /> My Trips
       </h1>

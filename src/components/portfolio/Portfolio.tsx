@@ -96,8 +96,8 @@ const Portfolio = () => {
           websiteTitle,
           resume,
           fullName,
-          yearsOfExperience
-        }:any = portfolio;
+          yearsOfExperience,
+        }: any = portfolio;
         setAboutMe(aboutMe);
         setSkills(skills);
         setTools(tools);
@@ -192,7 +192,13 @@ const Portfolio = () => {
     const isContactValid =
       contact.email && contact.phone && contact.social.github;
     const isBasicInfoValid =
-      aboutMe && websiteTitle && resume && fullName && yearsOfExperience && skills.length > 0 && tools.length > 0;
+      aboutMe &&
+      websiteTitle &&
+      resume &&
+      fullName &&
+      yearsOfExperience &&
+      skills.length > 0 &&
+      tools.length > 0;
     return isProjectValid && isContactValid && isBasicInfoValid;
   };
 
@@ -209,13 +215,13 @@ const Portfolio = () => {
         return;
       }
       let resumeUrl;
-      if(resume.startsWith("blob:")){
-      const file = await getFileFromBlobURL(resume, `${resume}.pdf`);
-       resumeUrl = await uploadImageFile(
-        `portfolios/${user.uid}/${file.name}`,
-        file
-      );
-    }
+      if (resume.startsWith("blob:")) {
+        const file = await getFileFromBlobURL(resume, `${resume}.pdf`);
+        resumeUrl = await uploadImageFile(
+          `portfolios/${user.uid}/${file.name}`,
+          file
+        );
+      }
       const portfolioData = {
         aboutMe,
         skills,
@@ -224,11 +230,12 @@ const Portfolio = () => {
         contact,
         selectedTheme,
         websiteTitle,
-        resume: resumeUrl!==undefined?resumeUrl:resume,
+        resume: resumeUrl !== undefined ? resumeUrl : resume,
         fullName,
-        yearsOfExperience
+        yearsOfExperience,
       };
       await savePortfolio(portfolioData, user.uid);
+
       console.log("Portfolio Data:", portfolioData);
     } catch (error) {
       console.error("Error saving portfolio:", error);
@@ -238,7 +245,7 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="p-6 md:p-8 bg-gray-900 text-white min-h-screen">
+    <div className="h-screen overflow-y-auto p-6 md:p-8 bg-gray-900 text-white min-h-screen">
       <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
       <h1 className="text-2xl font-bold mb-6">Portfolio Management</h1>
 
@@ -351,7 +358,7 @@ const Portfolio = () => {
         </button>
       </div>
 
-      {/* Projects */}
+      {/* Responsive Projects Section */}
       <div className="mb-4">
         <h2 className="text-lg mb-2">Projects</h2>
         {projects.map((project, index) => (
@@ -401,59 +408,73 @@ const Portfolio = () => {
               }}
             />
 
-
-            {/* Tools used multi-select dropdown */}
+            {/* Responsive Tools Select */}
             <div>
-                <label className="block text-white mb-2">Tools Used:</label>
-                <Select
-                  isMulti
-                  options={tools.map((tool: string) => ({ value: tool, label: tool }))}
-                  value={project.tools?.map((tool: string) => ({ value: tool, label: tool })) || []}
-                  onChange={(selectedOptions) => {
-                    const selectedTools = selectedOptions.map((option: any) => option.value);
-                    const newProjects = projects.map((p: any, idx: number) =>
-                      idx === index ? { ...p, tools: selectedTools } : p
-                    );
-                    setProjects(newProjects);
-                  }}
-                  className="w-full p-2 bg-gray-700 text-black rounded-lg"
-                />
-              </div>
-
-
-            <div className="grid grid-cols-3 gap-4">
-              <ImageUpload
-                url={project.logo}
-                onUpload={(file) => handleImageUpload(index, "logo", file)}
-                onRemove={() => handleImageRemove(index, "logo")}
-                label="Logo Image"
-              />
-
-              <ImageUpload
-                url={project.image1}
-                onUpload={(file) => handleImageUpload(index, "image1", file)}
-                onRemove={() => handleImageRemove(index, "image1")}
-                label="Project Image 1"
-              />
-
-              <ImageUpload
-                url={project.image2}
-                onUpload={(file) => handleImageUpload(index, "image2", file)}
-                onRemove={() => handleImageRemove(index, "image2")}
-                label="Project Image 2"
+              <label className="block text-white mb-2">Tools Used:</label>
+              <Select
+                isMulti
+                options={tools.map((tool: string) => ({
+                  value: tool,
+                  label: tool,
+                }))}
+                value={
+                  project.tools?.map((tool: string) => ({
+                    value: tool,
+                    label: tool,
+                  })) || []
+                }
+                onChange={(selectedOptions) => {
+                  const selectedTools = selectedOptions.map(
+                    (option: any) => option.value
+                  );
+                  const newProjects = projects.map((p: any, idx: number) =>
+                    idx === index ? { ...p, tools: selectedTools } : p
+                  );
+                  setProjects(newProjects);
+                }}
+                className="w-full p-2 bg-gray-700 text-black rounded-lg"
               />
             </div>
-            <div className="flex justify-end">
+
+            {/* Responsive Image Upload */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="w-full max-w-xs mx-auto">
+                <ImageUpload
+                  url={project.logo}
+                  onUpload={(file) => handleImageUpload(index, "logo", file)}
+                  onRemove={() => handleImageRemove(index, "logo")}
+                  label="Logo Image"
+                />
+              </div>
+              <div className="w-full max-w-xs mx-auto">
+                <ImageUpload
+                  url={project.image1}
+                  onUpload={(file) => handleImageUpload(index, "image1", file)}
+                  onRemove={() => handleImageRemove(index, "image1")}
+                  label="Project Image 1"
+                />
+              </div>
+              <div className="w-full max-w-xs mx-auto">
+                <ImageUpload
+                  url={project.image2}
+                  onUpload={(file) => handleImageUpload(index, "image2", file)}
+                  onRemove={() => handleImageRemove(index, "image2")}
+                  label="Project Image 2"
+                />
+              </div>
+            </div>
+
+            {/* Remove Project Button */}
+            <div className="flex justify-end mt-4">
               <button
                 onClick={() => removeProject(index)}
-                className="top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
               >
                 Remove Project
               </button>
             </div>
           </div>
         ))}
-
         <button
           onClick={handleProjectAdd}
           className="bg-blue-500 text-white px-4 py-2 rounded-md"
@@ -554,7 +575,7 @@ const Portfolio = () => {
                   Live Preview
                 </button>
                 <button
-                  className="text-white"
+                  className="text-white border border-white rounded-md px-4 py-2 hover:bg-white hover:text-gray-800 transition-colors duration-300"
                   onClick={() => setSelectedTheme(theme.name)}
                 >
                   Use this template

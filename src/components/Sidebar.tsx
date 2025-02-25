@@ -16,7 +16,7 @@ import { NavLink } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../utils/firebaseConfig"; // Assuming firebaseConfig exports initialized `auth` and `db`
 import { doc, getDoc } from "firebase/firestore";
-const Sidebar: React.FC = () => {
+const Sidebar = ({setMenuOpen}:any) => {
   const [userName, setUserName] = useState<string>(
     localStorage.getItem("userName") || "User"
   );
@@ -81,6 +81,11 @@ const Sidebar: React.FC = () => {
         <nav className="space-y-6">
           <NavLink
             to="/dashboard/home"
+            onClick={() => {
+              if (window.innerWidth < 1024) { // Example: Only close if screen is smaller than 1024px
+                setMenuOpen(false);
+              }
+            }}
             className={({ isActive }) =>
               `flex items-center space-x-4 hover:text-blue-500 ${
                 isActive ? "text-blue-500" : "text-gray-300"
@@ -92,6 +97,11 @@ const Sidebar: React.FC = () => {
           </NavLink>
           <NavLink
             to="/dashboard/expenses"
+            onClick={() => {
+              if (window.innerWidth < 1024) { // Example: Only close if screen is smaller than 1024px
+                setMenuOpen(false);
+              }
+            }}
             className={({ isActive }) =>
               `flex items-center space-x-4 hover:text-blue-500 ${
                 isActive ? "text-blue-500" : "text-gray-300"
@@ -103,6 +113,11 @@ const Sidebar: React.FC = () => {
           </NavLink>
           <NavLink
             to="/dashboard/trips"
+            onClick={() => {
+              if (window.innerWidth < 1024) { // Example: Only close if screen is smaller than 1024px
+                setMenuOpen(false);
+              }
+            }}
             className={({ isActive }) =>
               `flex items-center space-x-4 hover:text-blue-500 ${
                 isActive ? "text-blue-500" : "text-gray-300"
@@ -144,6 +159,11 @@ const Sidebar: React.FC = () => {
               <div className="pl-6 space-y-2 mt-2">
                 <NavLink
                   to="/dashboard/appointments"
+                  onClick={() => {
+                    if (window.innerWidth < 1024) { // Example: Only close if screen is smaller than 1024px
+                      setMenuOpen(false);
+                    }
+                  }}
                   className={({ isActive }) =>
                     `flex items-center space-x-4 p-2 rounded-md hover:text-blue-500 ${
                       isActive ? "text-blue-500" : "text-gray-300"
@@ -155,6 +175,11 @@ const Sidebar: React.FC = () => {
                 </NavLink>
                 <NavLink
                   to="/dashboard/services"
+                  onClick={() => {
+                    if (window.innerWidth < 1024) { // Example: Only close if screen is smaller than 1024px
+                      setMenuOpen(false);
+                    }
+                  }}
                   className={({ isActive }) =>
                     `flex items-center space-x-4 p-2 rounded-md hover:text-blue-500 ${
                       isActive ? "text-blue-500" : "text-gray-300"
@@ -170,6 +195,11 @@ const Sidebar: React.FC = () => {
 
           <NavLink
             to="/dashboard/portfolio"
+            onClick={() => {
+              if (window.innerWidth < 1024) { // Example: Only close if screen is smaller than 1024px
+                setMenuOpen(false);
+              }
+            }}
             className={({ isActive }) =>
               `flex items-center space-x-4 hover:text-blue-500 ${
                 isActive ? "text-blue-500" : "text-gray-300"
@@ -181,6 +211,11 @@ const Sidebar: React.FC = () => {
           </NavLink>
           <NavLink
             to="/dashboard/settings"
+            onClick={() => {
+              if (window.innerWidth < 1024) { // Example: Only close if screen is smaller than 1024px
+                setMenuOpen(false);
+              }
+            }}
             className={({ isActive }) =>
               `flex items-center space-x-4 hover:text-blue-500 ${
                 isActive ? "text-blue-500" : "text-gray-300"
@@ -192,6 +227,11 @@ const Sidebar: React.FC = () => {
           </NavLink>
           <NavLink
             to="/dashboard/support"
+            onClick={() => {
+              if (window.innerWidth < 1024) { // Example: Only close if screen is smaller than 1024px
+                setMenuOpen(false);
+              }
+            }}
             className={({ isActive }) =>
               `flex items-center space-x-4 hover:text-blue-500 ${
                 isActive ? "text-blue-500" : "text-gray-300"

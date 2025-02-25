@@ -60,8 +60,9 @@ const Appointments: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+
   return (
-    <div className="p-6 md:p-8 bg-gray-900 text-white min-h-screen">
+    <div className="h-screen overflow-y-auto p-6 md:p-8 bg-gray-900 text-white min-h-screen">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center space-x-4">

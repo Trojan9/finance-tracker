@@ -48,12 +48,13 @@ const Services = () => {
       return () => unsubscribeAuth(); // ✅ Cleanup listener on unmount
     }, []);
 
+    
     useEffect(() => {
         
       if (!user) return;
         fetchCategories();
         fetchServices();
-    }, []);
+    }, [user]);
 
     const createCategory = async () => {
        
@@ -112,8 +113,9 @@ const Services = () => {
         setEditingServiceId(service.id);
     };
 
+
     return (
-        <div className="p-6 md:p-8 bg-gray-900 text-white min-h-screen">
+        <div className="h-screen overflow-y-auto p-6 md:p-8 bg-gray-900 text-white min-h-screen">
             <h1 className="text-2xl font-bold mb-6">Service Categories & Services</h1>
             {loading && <div className="text-center mb-4">Processing...</div>}
 
