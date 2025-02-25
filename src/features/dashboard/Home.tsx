@@ -380,7 +380,7 @@ let userId = auth.currentUser!.uid;
 
    {/* Modal Overlay - Opens on Top of Page */}
    {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-transparent bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-96 animate-fadeIn">
             {/* Modal Header */}
             <div className="flex justify-between items-center mb-4">

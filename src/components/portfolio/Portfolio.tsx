@@ -11,7 +11,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { db, auth, storage } from "../../utils/firebaseConfig";
 import {
   checkWebTitle,
-  getFileFromBlobURL, 
+  getFileFromBlobURL,
   getUsersPortfolioFormDetails,
   savePortfolio,
   uploadImageFile,
@@ -21,16 +21,27 @@ import Oval from "react-loading-icons/dist/esm/components/oval";
 import ImageUpload from "./ImageUpload";
 import { ToastContainer, toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
-
+import Select from "react-select"; // Using react-select for multi-select dropdown
 const Portfolio = () => {
   const [aboutMe, setAboutMe] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
   const [tools, setTools] = useState<string[]>([]);
   const [user, setUser] = useState(auth.currentUser);
   const [projects, setProjects] = useState([
-    { title: "", description: "", link: "", logo: "", image1: "", image2: "",details:"" },
+    {
+      title: "",
+      description: "",
+      link: "",
+      logo: "",
+      image1: "",
+      image2: "",
+      details: "",
+      tools: [],
+    },
   ]);
   const [websiteTitle, setWebsiteTitle] = useState<string>("");
+  const [fullName, setFullName] = useState<string>("");
+  const [yearsOfExperience, setYearsOfExperience] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false); // Progress Indicator State
   const [resume, setResume] = useState<string | "">("");
 
@@ -75,9 +86,18 @@ const Portfolio = () => {
       const portfolio = await getUsersPortfolioFormDetails(user.uid);
 
       if (portfolio) {
-
-        const { aboutMe, skills, tools, projects, contact, selectedTheme, websiteTitle ,resume } =
-          portfolio;
+        const {
+          aboutMe,
+          skills,
+          tools,
+          projects,
+          contact,
+          selectedTheme,
+          websiteTitle,
+          resume,
+          fullName,
+          yearsOfExperience
+        }:any = portfolio;
         setAboutMe(aboutMe);
         setSkills(skills);
         setTools(tools);
@@ -86,11 +106,11 @@ const Portfolio = () => {
         setSelectedTheme(selectedTheme);
         setWebsiteTitle(websiteTitle);
         setResume(resume);
-        
-      }else{
-        if(contact.email == ""){
-      setContact({ ...contact, email: auth.currentUser?.email || "" });
-
+        setFullName(fullName);
+        setYearsOfExperience(yearsOfExperience);
+      } else {
+        if (contact.email == "") {
+          setContact({ ...contact, email: auth.currentUser?.email || "" });
         }
       }
     };
@@ -98,7 +118,7 @@ const Portfolio = () => {
     fetchPortfolio();
   }, [user]);
   const [contact, setContact] = useState({
-    email:"", // Default value to user's email
+    email: "", // Default value to user's email
     phone: "",
     social: { github: "", linkedin: "", twitter: "" },
   });
@@ -133,7 +153,8 @@ const Portfolio = () => {
         logo: "",
         image1: "",
         image2: "",
-        details:""
+        details: "",
+        tools: [],
       },
     ]);
 
@@ -155,38 +176,46 @@ const Portfolio = () => {
     setResume("");
   };
 
-
-  
   const validatePortfolio = () => {
     const isProjectValid =
-    projects.length > 0 &&
-    projects.every(
-      (project) =>
-        project.title &&
-        project.description &&
-        project.link &&
-        project.logo &&
-        project.image1 &&
-        project.image2 &&
-        project.details
-    );
-    const isContactValid = contact.email && contact.phone && contact.social.github;
-    const isBasicInfoValid = aboutMe && websiteTitle && skills.length > 0 && tools.length > 0;
-    return isProjectValid && isContactValid && isBasicInfoValid && resume;
+      projects.length > 0 &&
+      projects.every(
+        (project) =>
+          project.title &&
+          project.description &&
+          project.link &&
+          project.logo &&
+          project.image1 &&
+          project.image2 &&
+          project.details
+      );
+    const isContactValid =
+      contact.email && contact.phone && contact.social.github;
+    const isBasicInfoValid =
+      aboutMe && websiteTitle && resume && fullName && yearsOfExperience && skills.length > 0 && tools.length > 0;
+    return isProjectValid && isContactValid && isBasicInfoValid;
   };
 
   const handleSubmit = async () => {
     if (!user) return;
 
     setLoading(true); // Show progress indicator
-  
+
     try {
       if (!(await checkWebTitle(websiteTitle, user.uid))) {
-        toast.error("Website title is already taken by another user. Please choose a different title.");
+        toast.error(
+          "Website title is already taken by another user. Please choose a different title."
+        );
         return;
       }
+      let resumeUrl;
+      if(resume.startsWith("blob:")){
       const file = await getFileFromBlobURL(resume, `${resume}.pdf`);
-      const resumeUrl = await uploadImageFile(`portfolios/${user.uid}/${file.name}`, file);
+       resumeUrl = await uploadImageFile(
+        `portfolios/${user.uid}/${file.name}`,
+        file
+      );
+    }
       const portfolioData = {
         aboutMe,
         skills,
@@ -195,7 +224,9 @@ const Portfolio = () => {
         contact,
         selectedTheme,
         websiteTitle,
-        resume: resumeUrl,
+        resume: resumeUrl!==undefined?resumeUrl:resume,
+        fullName,
+        yearsOfExperience
       };
       await savePortfolio(portfolioData, user.uid);
       console.log("Portfolio Data:", portfolioData);
@@ -204,12 +235,11 @@ const Portfolio = () => {
     } finally {
       setLoading(false); // Hide progress indicator
     }
-  
   };
 
   return (
     <div className="p-6 md:p-8 bg-gray-900 text-white min-h-screen">
-        <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
+      <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
       <h1 className="text-2xl font-bold mb-6">Portfolio Management</h1>
 
       {/* Website Title */}
@@ -219,7 +249,7 @@ const Portfolio = () => {
           type="text"
           className="w-full p-2 rounded-md bg-gray-700 text-white"
           value={websiteTitle}
-          onChange={(e) => setWebsiteTitle(e.target.value)}
+          onChange={(e) => setWebsiteTitle(e.target.value.toLowerCase())}
           placeholder="e.g., your link becomes geynius.com/your-title"
         />
       </div>
@@ -235,23 +265,49 @@ const Portfolio = () => {
         />
       </div>
 
+      {/* Full Name */}
+      <div className="mb-4">
+        <h2 className="text-lg mb-2">Full Name</h2>
+        <input
+          type="text"
+          className="w-full p-2 rounded-md bg-gray-700 text-white"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          placeholder="e.g., your full name"
+        />
+      </div>
+
+      {/* Years of Experience */}
+      <div className="mb-4">
+        <h2 className="text-lg mb-2">Years of Experience</h2>
+
+        <input
+          type="number"
+          name="yearsOfExperience"
+          min="0"
+          value={yearsOfExperience}
+          onChange={(e) => setYearsOfExperience(e.target.value)}
+          placeholder="Years of Experience"
+          className="w-full p-2 rounded-md bg-gray-700 text-white"
+        />
+      </div>
       {/* Skills */}
       <div className="mb-4">
         <h2 className="text-lg mb-2">Skills</h2>
         {skills.map((skill, index) => (
           <div key={index} className="flex items-center mb-2">
-          <input
-            key={index}
-            className="w-full p-2 mb-2 rounded-md bg-gray-700 text-white"
-            value={skill}
-            onChange={(e) => {
-              const newSkills = [...skills];
-              newSkills[index] = e.target.value;
-              setSkills(newSkills);
-            }}
-            placeholder="Skill"
-          />
-        <FaTimes
+            <input
+              key={index}
+              className="w-full p-2 mb-2 rounded-md bg-gray-700 text-white"
+              value={skill}
+              onChange={(e) => {
+                const newSkills = [...skills];
+                newSkills[index] = e.target.value;
+                setSkills(newSkills);
+              }}
+              placeholder="Skill"
+            />
+            <FaTimes
               className="text-red-500 ml-2 cursor-pointer"
               onClick={() => removeSkill(index)}
             />
@@ -270,18 +326,18 @@ const Portfolio = () => {
         <h2 className="text-lg mb-2">Tools</h2>
         {tools.map((tool, index) => (
           <div key={index} className="flex items-center mb-2">
-          <input
-            key={index}
-            className="w-full p-2 mb-2 rounded-md bg-gray-700 text-white"
-            value={tool}
-            onChange={(e) => {
-              const newTools = [...tools];
-              newTools[index] = e.target.value;
-              setTools(newTools);
-            }}
-            placeholder="Tool"
-          />
-          <FaTimes
+            <input
+              key={index}
+              className="w-full p-2 mb-2 rounded-md bg-gray-700 text-white"
+              value={tool}
+              onChange={(e) => {
+                const newTools = [...tools];
+                newTools[index] = e.target.value;
+                setTools(newTools);
+              }}
+              placeholder="Tool"
+            />
+            <FaTimes
               className="text-red-500 ml-2 cursor-pointer"
               onClick={() => removeTool(index)}
             />
@@ -299,8 +355,10 @@ const Portfolio = () => {
       <div className="mb-4">
         <h2 className="text-lg mb-2">Projects</h2>
         {projects.map((project, index) => (
-            <div key={index} className="relative mb-4 border p-4 rounded-md bg-gray-800">
-            
+          <div
+            key={index}
+            className="relative mb-4 border p-4 rounded-md bg-gray-800"
+          >
             <input
               className="w-full p-2 mb-2 rounded-md bg-gray-700 text-white"
               placeholder="Project Title"
@@ -331,17 +389,37 @@ const Portfolio = () => {
                 setProjects(newProjects);
               }}
             />
-             <textarea
+            <textarea
               className="w-full p-2 mb-2 rounded-md bg-gray-700 text-white"
               placeholder="Project Details"
-              value={project.details}
+              value={project.details ? JSON.parse(project.details) : ""}
               rows={6}
               onChange={(e) => {
                 const newProjects = [...projects];
-                newProjects[index].details = e.target.value;
+                newProjects[index].details = JSON.stringify(e.target.value);
                 setProjects(newProjects);
               }}
             />
+
+
+            {/* Tools used multi-select dropdown */}
+            <div>
+                <label className="block text-white mb-2">Tools Used:</label>
+                <Select
+                  isMulti
+                  options={tools.map((tool: string) => ({ value: tool, label: tool }))}
+                  value={project.tools?.map((tool: string) => ({ value: tool, label: tool })) || []}
+                  onChange={(selectedOptions) => {
+                    const selectedTools = selectedOptions.map((option: any) => option.value);
+                    const newProjects = projects.map((p: any, idx: number) =>
+                      idx === index ? { ...p, tools: selectedTools } : p
+                    );
+                    setProjects(newProjects);
+                  }}
+                  className="w-full p-2 bg-gray-700 text-black rounded-lg"
+                />
+              </div>
+
 
             <div className="grid grid-cols-3 gap-4">
               <ImageUpload
@@ -366,12 +444,12 @@ const Portfolio = () => {
               />
             </div>
             <div className="flex justify-end">
-            <button
-              onClick={() => removeProject(index)}
-              className="top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
-            >
-              Remove Project
-            </button>
+              <button
+                onClick={() => removeProject(index)}
+                className="top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
+              >
+                Remove Project
+              </button>
             </div>
           </div>
         ))}
@@ -434,10 +512,10 @@ const Portfolio = () => {
         />
       </div>
 
-{/* Resume Upload */}
+      {/* Resume Upload */}
       <div className="mb-4">
         <ImageUpload
-        onRemove={() => handleResumeRemove()}
+          onRemove={() => handleResumeRemove()}
           onUpload={(file) => handleResumeUpload(file)}
           url={resume}
           label="Upload Resume"
@@ -490,14 +568,13 @@ const Portfolio = () => {
       {/* Save Button with Progress Indicator */}
       <div className="text-center mt-8">
         <button
-        onClick={() => {
-          if (validatePortfolio()) {
-            handleSubmit();
-          } else {
-            toast.error("Please fill in all required contact fields."); 
-          }
-        }}
-          
+          onClick={() => {
+            if (validatePortfolio()) {
+              handleSubmit();
+            } else {
+              toast.error("Please fill in all required contact fields.");
+            }
+          }}
           className="bg-green-500 text-white px-6 py-3 rounded-md font-semibold text-lg shadow-lg"
           disabled={loading} // Disable button while loading
         >

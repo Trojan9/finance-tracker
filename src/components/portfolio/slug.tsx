@@ -35,7 +35,8 @@ function Slug() {
     contact={profilePortfolioForm?.contact}
     resume={profilePortfolioForm?.resume}
     websiteTitle={profilePortfolioForm?.websiteTitle}
-    
+    fullName={profilePortfolioForm?.fullName}
+    yearsOfExperience={profilePortfolioForm?.yearsOfExperience}
     ></Minimal>}</div>
   )
 }
