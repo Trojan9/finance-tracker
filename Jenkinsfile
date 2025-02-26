@@ -38,7 +38,7 @@ pipeline {
         stage('Deploy to Web Directory') {
             steps {
                 echo 'Copying build to /var/www/html/ directory...'
-                sh 'sudo cp -r finance-tracker/public/* /var/www/html/'
+                sh 'sudo cp -r finance-tracker/public/dist/* /var/www/html/'
             }
         }
 
