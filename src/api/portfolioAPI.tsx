@@ -60,6 +60,14 @@ export const savePortfolio = async (portfolio: any, uid: string) => {
       }
     }
   }
+
+  for (const blog of portfolio.blogs) {
+      if (blog[`image`] && blog[`image`].startsWith("blob:")) {
+        const file = await getFileFromBlobURL(blog[`image`], `image.png`)
+        blog[`image`] = await uploadImageFile(`portfolios/${uid}/blogs/${blog.title}/image`, file);
+        delete blog[`imageFile`];
+    }
+  }
   const PortfolioRef = collection(db, "portfolio");
   const q = query(PortfolioRef, where("uid", "==", uid));
   const querySnapshot = await getDocs(q);

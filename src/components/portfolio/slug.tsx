@@ -68,6 +68,8 @@ function Slug() {
                     websiteTitle={profilePortfolioForm?.websiteTitle}
                     fullName={profilePortfolioForm?.fullName}
                     yearsOfExperience={profilePortfolioForm?.yearsOfExperience}
+                    profileImage={profilePortfolioForm?.profileImage}
+                    blogs={profilePortfolioForm?.blogs}
                   />
                 );
               case "Creative":

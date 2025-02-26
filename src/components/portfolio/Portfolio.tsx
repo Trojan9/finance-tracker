@@ -39,11 +39,19 @@ const Portfolio = () => {
       tools: [],
     },
   ]);
+  const [blogs, setBlogs] = useState([
+    {
+      title: "",
+      link: "",
+      image: "",
+    },
+  ]);
   const [websiteTitle, setWebsiteTitle] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
   const [yearsOfExperience, setYearsOfExperience] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false); // Progress Indicator State
   const [resume, setResume] = useState<string | "">("");
+  const [profileImage, setProfileImage] = useState<string | "">("");
 
   const navigate = useNavigate();
 
@@ -97,17 +105,44 @@ const Portfolio = () => {
           resume,
           fullName,
           yearsOfExperience,
+          profileImage,
+          blogs,
         }: any = portfolio;
-        setAboutMe(aboutMe);
-        setSkills(skills);
-        setTools(tools);
-        setProjects(projects);
-        setContact(contact);
-        setSelectedTheme(selectedTheme);
-        setWebsiteTitle(websiteTitle);
-        setResume(resume);
-        setFullName(fullName);
-        setYearsOfExperience(yearsOfExperience);
+        setAboutMe(aboutMe??"");
+        setSkills(skills??[]);
+        setTools(tools??[]);
+        setProjects(projects??[
+
+          {
+            title: "",
+            description: "",
+            link: "",
+            logo: "",
+            image1: "",
+            image2: "",
+            details: "",
+            tools: [],
+          },
+        ]);
+
+        setContact(contact??{
+          email: "", // Default value to user's email
+          phone: "",
+          social: { github: "", linkedin: "", twitter: "" },
+        });
+        setSelectedTheme(selectedTheme??'');
+        setWebsiteTitle(websiteTitle??"");
+        setResume(resume??'');
+        setFullName(fullName??'');
+        setYearsOfExperience(yearsOfExperience??'');
+        setProfileImage(profileImage??'');
+        setBlogs(blogs ?? [
+          {
+            title: "",
+            link: "",
+            image: "",
+          },
+        ]);
       } else {
         if (contact.email == "") {
           setContact({ ...contact, email: auth.currentUser?.email || "" });
@@ -158,6 +193,16 @@ const Portfolio = () => {
       },
     ]);
 
+  const handleBlogAdd = () =>
+    setBlogs([
+      ...blogs,
+      {
+        title: "",
+        link: "",
+        image: "",
+      },
+    ]);
+
   const handleImageUpload = (index: number, key: string, file: File) => {
     const newProjects: any = [...projects];
     newProjects[index][key] = URL.createObjectURL(file);
@@ -169,11 +214,30 @@ const Portfolio = () => {
     newProjects[index][key] = "";
     setProjects(newProjects);
   };
+
+  const handleBlogsImageUpload = (index: number, key: string, file: File) => {
+    const newBlogs: any = [...blogs];
+    newBlogs[index][key] = URL.createObjectURL(file);
+
+    setBlogs(newBlogs);
+  };
+
+  const handleBlogsImageRemove = (index: number, key: string) => {
+    const newBlogs: any = [...blogs];
+    newBlogs[index][key] = "";
+    setBlogs(newBlogs);
+  };
   const handleResumeUpload = (file: File) => {
     setResume(URL.createObjectURL(file));
   };
   const handleResumeRemove = () => {
     setResume("");
+  };
+  const handleProfileImageUpload = (file: File) => {
+    setProfileImage(URL.createObjectURL(file));
+  };
+  const handleProfileImageRemove = () => {
+    setProfileImage("");
   };
 
   const validatePortfolio = () => {
@@ -189,6 +253,14 @@ const Portfolio = () => {
           project.image2 &&
           project.details
       );
+      const isBlogsValid =
+      blogs.length > 0 &&
+      blogs.every(
+        (blog) =>
+          blog.title &&
+        blog.link &&
+          blog.image 
+      );
     const isContactValid =
       contact.email && contact.phone && contact.social.github;
     const isBasicInfoValid =
@@ -199,7 +271,8 @@ const Portfolio = () => {
       yearsOfExperience &&
       skills.length > 0 &&
       tools.length > 0;
-    return isProjectValid && isContactValid && isBasicInfoValid;
+    return isProjectValid && isContactValid && isBasicInfoValid && isBlogsValid;
+
   };
 
   const handleSubmit = async () => {
@@ -215,6 +288,17 @@ const Portfolio = () => {
         return;
       }
       let resumeUrl;
+      let profileImageUrl;
+      if (profileImage.startsWith("blob:")) {
+        const file = await getFileFromBlobURL(
+          profileImage,
+          `${profileImage}.png`
+        );
+        profileImageUrl = await uploadImageFile(
+          `portfolios/${user.uid}/profileImage/${file.name}`,
+          file
+        );
+      }
       if (resume.startsWith("blob:")) {
         const file = await getFileFromBlobURL(resume, `${resume}.pdf`);
         resumeUrl = await uploadImageFile(
@@ -233,6 +317,8 @@ const Portfolio = () => {
         resume: resumeUrl !== undefined ? resumeUrl : resume,
         fullName,
         yearsOfExperience,
+        profileImage: profileImageUrl !== undefined ? profileImageUrl : profileImage,
+        blogs,
       };
       await savePortfolio(portfolioData, user.uid);
 
@@ -296,6 +382,15 @@ const Portfolio = () => {
           onChange={(e) => setYearsOfExperience(e.target.value)}
           placeholder="Years of Experience"
           className="w-full p-2 rounded-md bg-gray-700 text-white"
+        />
+      </div>
+      {/* Profile Image  Upload */}
+      <div className="mb-4">
+        <ImageUpload
+          onRemove={() => handleProfileImageRemove()}
+          onUpload={(file) => handleProfileImageUpload(file)}
+          url={profileImage}
+          label="Profile Image"
         />
       </div>
       {/* Skills */}
@@ -483,6 +578,73 @@ const Portfolio = () => {
         </button>
       </div>
 
+      {/* Responsive Blogs Section */}
+      <div className="mb-4">
+        <h2 className="text-lg mb-2">Blogs & Articles</h2>
+        {blogs.map((blog, index) => (
+          <div
+            key={index}
+            className="relative mb-4 border p-4 rounded-md bg-gray-800"
+          >
+            <input
+              className="w-full p-2 mb-2 rounded-md bg-gray-700 text-white"
+              placeholder="Blog Title"
+              value={blog.title}
+              onChange={(e) => {
+
+                const newBlogs = [...blogs];
+                newBlogs[index].title = e.target.value;
+                setBlogs(newBlogs);
+
+              }}
+            />
+
+            <input
+              className="w-full p-2 mb-2 rounded-md bg-gray-700 text-white"
+              placeholder="Blog Link"
+              value={blog.link}
+              onChange={(e) => {
+                const newBlogs = [...blogs];
+                newBlogs[index].link = e.target.value;
+                setBlogs(newBlogs);
+              }}
+            />
+
+            {/* Responsive Image Upload */}
+            <div className="mb-4">
+              <ImageUpload
+                url={blog.image}
+                onUpload={(file) =>
+                  handleBlogsImageUpload(index, "image", file)
+                }
+                onRemove={() => handleBlogsImageRemove(index, "image")}
+                label="Blog Image"
+              />
+            </div>
+
+            {/* Remove Project Button */}
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={() => {
+                  const newBlogs = [...blogs];
+                  newBlogs.splice(index, 1);
+                  setBlogs(newBlogs);
+                }}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              >
+                Remove Blog
+              </button>
+            </div>
+          </div>
+        ))}
+        <button
+          onClick={handleBlogAdd}
+          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        >
+          Add Blogs
+        </button>
+      </div>
+
       {/* Contact */}
       <div className="mb-4">
         <h2 className="text-lg mb-2">Contact</h2>
@@ -576,7 +738,15 @@ const Portfolio = () => {
                 </button>
                 <button
                   className="text-white border border-white rounded-md px-4 py-2 hover:bg-white hover:text-gray-800 transition-colors duration-300"
-                  onClick={() => setSelectedTheme(theme.name)}
+                  onClick={() => {
+                    if (theme.name === "Modern" && profileImage === "") {
+                      toast.error(
+                        "Please upload a profile image for this theme."
+                      );
+                    } else {
+                      setSelectedTheme(theme.name);
+                    }
+                  }}
                 >
                   Use this template
                 </button>
