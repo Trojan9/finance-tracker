@@ -10,8 +10,8 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import asset1 from "../assets/asset1.svg";
-import asset2 from "../assets/asset2.svg";
+import asset1 from "../assets/asset1.png";
+import asset2 from "../assets/asset2.png";
 import illustration1 from "../assets/landing1.jpg";
 import illustration2 from "../assets/landing2.jpg";
 import illustration3 from "../assets/landing3.jpg";

@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, googleProvider, loginWithEmail, loginWithGoogle } from "../utils/firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import asset1 from "../assets/asset1.svg";
-import asset2 from "../assets/asset2.svg";
+import asset1 from "../assets/asset1.png";
+import asset2 from "../assets/asset2.png";
 import google from "../assets/google.png";
 
 const Login: React.FC = () => {

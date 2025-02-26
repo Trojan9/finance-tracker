@@ -10,8 +10,8 @@ import {
 import { doc, setDoc } from "firebase/firestore";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import asset1 from "../assets/asset1.svg";
-import asset2 from "../assets/asset2.svg";
+import asset1 from "../assets/asset1.png";
+import asset2 from "../assets/asset2.png";
 import google from "../assets/google.png";
 
 const Register: React.FC = () => {
