@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { auth, googleProvider, loginWithEmail, loginWithGoogle } from "../utils/firebaseConfig";
+import { auth, db, googleProvider, loginWithEmail, loginWithGoogle } from "../utils/firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import asset1 from "../assets/asset1.png";
 import asset2 from "../assets/asset2.png";
 import google from "../assets/google.png";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -32,7 +33,25 @@ const Login: React.FC = () => {
   const handleGoogleSignIn = async () => {
     setLoadingGoogle(true); // Show spinner for Google sign-in
     try {
-      await loginWithGoogle(auth, googleProvider);
+     // Sign in with Google
+    const userCredential = await loginWithGoogle(auth, googleProvider);
+    const user = userCredential.user;
+
+    // Reference to Firestore user document
+    const userDocRef = doc(db, "users", user.uid);
+
+    // Check if user exists in Firestore
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (!userDocSnap.exists()) {
+      // User does not exist, store details
+      await setDoc(userDocRef, {
+
+        uid: user.uid,
+        name: user.displayName || "Unknown",
+        email: user.email || "No email",
+      });
+    }
       navigate("/dashboard/home");
     } catch (error: any) {
       console.error("Error signing in with Google:", error);

@@ -7,7 +7,7 @@ import {
   loginWithGoogle,
   db,
 } from "../utils/firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import asset1 from "../assets/asset1.png";
@@ -48,17 +48,27 @@ const Register: React.FC = () => {
   const handleGoogleSignIn = async () => {
     setLoadingGoogle(true); // Only affects Google button
     try {
-      const userCredential = await loginWithGoogle(auth, googleProvider);
-      const user = userCredential.user;
+ // Sign in with Google
+ const userCredential = await loginWithGoogle(auth, googleProvider);
+ const user = userCredential.user;
 
-      // Store user details in Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        name: user.displayName,
-        email: user.email,
-      });
+ // Reference to Firestore user document
+ const userDocRef = doc(db, "users", user.uid);
 
-      navigate("/dashboard/home");
+
+ // Check if user exists in Firestore
+ const userDocSnap = await getDoc(userDocRef);
+
+ if (!userDocSnap.exists()) {
+   // User does not exist, store details
+   await setDoc(userDocRef, {
+
+     uid: user.uid,
+     name: user.displayName || "Unknown",
+     email: user.email || "No email",
+   });
+ }
+   navigate("/dashboard/home");
     } catch (error: any) {
       console.error("Error signing in with Google:", error);
       toast.error(error.message || "Google sign-in failed!"); // Show error toast
