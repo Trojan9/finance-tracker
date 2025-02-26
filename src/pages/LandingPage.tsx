@@ -15,7 +15,7 @@ import asset2 from "../assets/asset2.png";
 import illustration1 from "../assets/landing1.jpg";
 import illustration2 from "../assets/landing2.jpg";
 import illustration3 from "../assets/landing3.jpg";
-import navBarLogo from "../assets/navbar_logo.svg";
+import navBarLogo from "../assets/navbar_logo.png";
 
 // Sample data for charts
 const spendingData = [
