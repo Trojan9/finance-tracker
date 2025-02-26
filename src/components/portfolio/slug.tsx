@@ -6,6 +6,7 @@ import { Oval } from "react-loading-icons";
 import { getUsersPortfolioFormDetailsSlug } from "../../api/portfolioAPI";
 import Minimal from "./templates/minimal";
 import Modern from "./templates/Modern";
+import Creative from "./templates/creative";
 
 function Slug() {
   const [isLoading, setIsLoading] = useState(true);
@@ -74,7 +75,7 @@ function Slug() {
                 );
               case "Creative":
                 return (
-                  <Minimal
+                  <Creative
                     aboutMe={profilePortfolioForm?.aboutMe}
                     skills={profilePortfolioForm?.skills}
                     tools={profilePortfolioForm?.tools}
