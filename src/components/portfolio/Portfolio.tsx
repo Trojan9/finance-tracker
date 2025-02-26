@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import minimal from "../../assets/minimal.png";
-import modern from "../../assets/modern.jpg";
+import modern from "../../assets/modern.png";
 import creative from "../../assets/creative.jpg";
 import professional from "../../assets/professional.jpg";
 import { useNavigate } from "react-router-dom";
