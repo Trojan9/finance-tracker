@@ -3,21 +3,13 @@ import { getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWith
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    // apiKey: "AIzaSyAo5iVUyfEfY2fA79fULKMKz0vFdCQi1xE",
-    // authDomain: "vibez-2120e.firebaseapp.com",
-    // databaseURL: "https://vibez-2120e.firebaseio.com",
-    // projectId: "vibez-2120e",
-    // storageBucket: "vibez-2120e.appspot.com",
-    // messagingSenderId: "902893329566",
-    // appId: "1:902893329566:web:7e9484bd398275a603af8f",
-    // measurementId: "G-846YPSLLY3"
-    apiKey: "AIzaSyDdQdCh-aUdHC34cNxSUiB2P9j4Cp7yX7w",
+    apiKey: "AIzaSyAa8eSZyi1ZCF-N9DwYm-aCldmp3TL6lJg",
     authDomain: "geynius-d495d.firebaseapp.com",
     projectId: "geynius-d495d",
     storageBucket: "geynius-d495d.appspot.com",
     messagingSenderId: "1092792481266",
-    appId: "1:1092792481266:web:c2bcc6cffe495ab941276b",
-    measurementId: "G-J5MEXDELJQ"
+    appId: "1:1092792481266:web:6c3e72884c23b9a641276b",
+    measurementId: "G-B7XB221K0D"
   };
 
 // Initialize Firebase
