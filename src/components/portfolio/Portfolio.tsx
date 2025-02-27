@@ -299,7 +299,7 @@ const Portfolio = () => {
   
     // Display errors using toast
     if (errors.length > 0) {
-      errors.forEach((error) => toast.error(error));
+      toast.error(errors[0]);
       return false;
     }
   
