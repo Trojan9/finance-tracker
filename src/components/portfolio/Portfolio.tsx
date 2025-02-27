@@ -257,32 +257,55 @@ const Portfolio = () => {
   };
 
   const validatePortfolio = () => {
-    const isProjectValid =
-      projects.length > 0 &&
-      projects.every(
-        (project) =>
-          project.title &&
-          project.description &&
-          project.link &&
-          project.logo &&
-          project.image1 &&
-          project.image2 &&
-          project.details
-      );
-    const isBlogsValid =
-      blogs.length > 0 &&
-      blogs.every((blog) => blog.title && blog.link && blog.image);
-    const isContactValid =
-      contact.email && contact.phone && contact.social.github;
-    const isBasicInfoValid =
-      aboutMe &&
-      websiteTitle &&
-      resume &&
-      fullName &&
-      yearsOfExperience &&
-      skills.length > 0 &&
-      tools.length > 0;
-    return isProjectValid && isContactValid && isBasicInfoValid && isBlogsValid;
+    let errors = [];
+  
+    // Validate Projects
+    if (projects.length === 0) {
+      errors.push("At least one project is required.");
+    } else {
+      projects.forEach((project, index) => {
+        if (!project.title) errors.push(`Project ${index + 1} is missing a title.`);
+        if (!project.description) errors.push(`Project ${index + 1} is missing a description.`);
+        if (!project.link) errors.push(`Project ${index + 1} is missing a link.`);
+        if (!project.logo) errors.push(`Project ${index + 1} is missing a logo.`);
+        if (!project.image1) errors.push(`Project ${index + 1} is missing an image1.`);
+        if (!project.image2) errors.push(`Project ${index + 1} is missing an image2.`);
+        if (!project.details) errors.push(`Project ${index + 1} is missing details.`);
+      });
+    }
+  
+    // Validate Blogs
+    if (blogs.length === 0) {
+      errors.push("At least one blog is required.");
+    } else {
+      blogs.forEach((blog, index) => {
+        if (!blog.title) errors.push(`Blog ${index + 1} is missing a title.`);
+        if (!blog.link) errors.push(`Blog ${index + 1} is missing a link.`);
+        if (!blog.image) errors.push(`Blog ${index + 1} is missing an image.`);
+      });
+    }
+  
+    // Validate Contact
+    if (!contact.email) errors.push("Contact email is required.");
+    if (!contact.phone) errors.push("Contact phone number is required.");
+    if (!contact.social.github) errors.push("GitHub profile link is required in social contact.");
+  
+    // Validate Basic Info
+    if (!aboutMe) errors.push("About Me section is required.");
+    if (!websiteTitle) errors.push("Website title is required.");
+    if (!resume) errors.push("Resume link is required.");
+    if (!fullName) errors.push("Full name is required.");
+    if (!yearsOfExperience) errors.push("Years of experience field is required.");
+    if (skills.length === 0) errors.push("At least one skill is required.");
+    if (tools.length === 0) errors.push("At least one tool is required.");
+  
+    // Display errors using toast
+    if (errors.length > 0) {
+      errors.forEach((error) => toast.error(error));
+      return false;
+    }
+  
+    return true;
   };
 
   const handleSubmit = async () => {
@@ -805,8 +828,6 @@ const Portfolio = () => {
           onClick={() => {
             if (validatePortfolio()) {
               handleSubmit();
-            } else {
-              toast.error("Please fill in all required contact fields.");
             }
           }}
           className="bg-green-500 text-white px-6 py-3 rounded-md font-semibold text-lg shadow-lg"
