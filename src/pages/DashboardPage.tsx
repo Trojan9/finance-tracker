@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import RecentExpenses from "../components/Dashboard/RecentExpenses";
-import QuickAccess from "../components/Dashboard/QuickAccess";
+import RecentExpenses from "../components/portfolio/templates/Dashboard/RecentExpenses";
+import QuickAccess from "../components/portfolio/templates/Dashboard/QuickAccess";
 import Home from "../features/dashboard/Home";
-import Expenses from "../components/Dashboard/Expenses";
-import Trips from "../components/Dashboard/Trips";
-import Settings from "../components/Dashboard/Settings";
-import Support from "../components/Dashboard/Support";
-import Appointments from "../components/Dashboard/Appointments";
+import Expenses from "../components/portfolio/templates/Dashboard/Expenses";
+import Trips from "../components/portfolio/templates/Dashboard/Trips";
+import Settings from "../components/portfolio/templates/Dashboard/Settings";
+import Support from "../components/portfolio/templates/Dashboard/Support";
+import Appointments from "../components/portfolio/templates/Dashboard/Appointments";
 import Portfolio from "../components/portfolio/Portfolio";
 import Services from "../components/Scheduling/Services";
 

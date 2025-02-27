@@ -7,6 +7,7 @@ import { getUsersPortfolioFormDetailsSlug } from "../../api/portfolioAPI";
 import Minimal from "./templates/minimal";
 import Modern from "./templates/Modern";
 import Creative from "./templates/creative";
+import Professional from "./templates/professional";
 
 function Slug() {
   const [isLoading, setIsLoading] = useState(true);
@@ -91,7 +92,7 @@ function Slug() {
                 );
               case "Professional":
                 return (
-                  <Minimal
+                  <Professional
                     aboutMe={profilePortfolioForm?.aboutMe}
                     skills={profilePortfolioForm?.skills}
                     tools={profilePortfolioForm?.tools}
@@ -101,6 +102,8 @@ function Slug() {
                     websiteTitle={profilePortfolioForm?.websiteTitle}
                     fullName={profilePortfolioForm?.fullName}
                     yearsOfExperience={profilePortfolioForm?.yearsOfExperience}
+                    profileImage={profilePortfolioForm?.profileImage}
+                    blogs={profilePortfolioForm?.blogs}
                   />
                 );
               default:

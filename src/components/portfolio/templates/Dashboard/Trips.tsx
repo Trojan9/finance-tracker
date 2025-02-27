@@ -13,7 +13,7 @@ import {
   FaImage,
   FaTrash,
 } from "react-icons/fa";
-import { db, auth, storage } from "../../utils/firebaseConfig";
+import { db, auth, storage } from "../../../../utils/firebaseConfig";
 import {
   collection,
   addDoc,
@@ -39,7 +39,7 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
-import countries from "../../constants/countries";
+import countries from "../../../../constants/countries";
 import { useNavigate } from "react-router-dom";
 
 const TripsPage: React.FC = () => {

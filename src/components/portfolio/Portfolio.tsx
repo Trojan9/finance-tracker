@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
+import skillIcons from "../../utils/tools"; 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import minimal from "../../assets/minimal.png";
 import modern from "../../assets/modern.png";
 import creative from "../../assets/creative.png";
-import professional from "../../assets/professional.jpg";
+import professional from "../../assets/professional.png";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth, storage } from "../../utils/firebaseConfig";
@@ -26,6 +27,11 @@ import Minimal from "./templates/minimal";
 import Modern from "./templates/Modern";
 import Creative from "./templates/creative";
 import Modal from "react-modal";
+import Professional from "./templates/professional";
+
+// Extract only the skill names from skillIcons
+const toolSuggestions = Object.keys(skillIcons);
+
 const Portfolio = () => {
   const [aboutMe, setAboutMe] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
@@ -430,33 +436,48 @@ const Portfolio = () => {
 
       {/* Tools */}
       <div className="mb-4">
-        <h2 className="text-lg mb-2">Tools</h2>
-        {tools.map((tool, index) => (
-          <div key={index} className="flex items-center mb-2">
-            <input
-              key={index}
-              className="w-full p-2 mb-2 rounded-md bg-gray-700 text-white"
-              value={tool}
-              onChange={(e) => {
-                const newTools = [...tools];
-                newTools[index] = e.target.value;
-                setTools(newTools);
-              }}
-              placeholder="Tool"
-            />
-            <FaTimes
-              className="text-red-500 ml-2 cursor-pointer"
-              onClick={() => removeTool(index)}
-            />
-          </div>
+      <h2 className="text-lg mb-2">Tools</h2>
+
+      {tools.map((tool, index) => (
+        <div key={index} className="flex items-center mb-2">
+          {/* Input with suggestions */}
+          <input
+            key={index}
+            className="w-full p-2 rounded-md bg-gray-700 text-white"
+            value={tool}
+            onChange={(e) => {
+              const newTools = [...tools];
+              newTools[index] = e.target.value;
+              setTools(newTools);
+            }}
+            placeholder="Tool"
+            list="tools-list" // Connects input with datalist
+          />
+
+          {/* Remove Tool Button */}
+          <FaTimes
+            className="text-red-500 ml-2 cursor-pointer"
+            onClick={() => removeTool(index)}
+          />
+        </div>
+      ))}
+
+      {/* Dropdown Suggestions */}
+      <datalist id="tools-list">
+
+        {toolSuggestions.map((tool:any, index:any) => (
+          <option key={index} value={tool} />
         ))}
-        <button
-          onClick={handleToolAdd}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
-        >
-          Add Tool
-        </button>
-      </div>
+      </datalist>
+
+      {/* Add Tool Button */}
+      <button
+        onClick={handleToolAdd}
+        className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2"
+      >
+        Add Tool
+      </button>
+    </div>
 
       {/* Responsive Projects Section */}
       <div className="mb-4">
@@ -864,7 +885,7 @@ const Portfolio = () => {
             />
           )}
           {previewTheme === "Professional" && (
-            <Modern
+            <Professional
               aboutMe={aboutMe}
               skills={skills}
               tools={tools}
