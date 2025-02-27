@@ -789,10 +789,6 @@ const Portfolio = () => {
                    
                     if (validatePortfolio()) {
                       setPreviewTheme(theme.name);
-                    } else {
-                      toast.error(
-                        "Please fill in all required contact fields."
-                      );
                     }
                   }
                   }}
@@ -808,7 +804,9 @@ const Portfolio = () => {
                         "Please upload a profile image for this theme."
                       );
                     } else {
+                      if(validatePortfolio()){
                       setSelectedTheme(theme.name);
+                      }
                     }
                   }}
                 >
