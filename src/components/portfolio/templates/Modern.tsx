@@ -115,18 +115,34 @@ const Modern = ({
         </div>
       )}
 
-      {/* Skills & Tools */}
-      <section className="py-12 px-4 sm:py-16 md:py-20 max-w-6xl mx-auto">
+     {/* Skills & Tools */}
+     <section className="py-12 px-4 sm:py-16 md:py-20 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold mb-6">Skills & Tools</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-          {[...skills, ...tools].map((item: string, index: number) => (
-            <span
-              key={index}
-              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm text-center"
-            >
-              {item}
-            </span>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Skills Section */}
+          <div>
+            <h3 className="text-2xl font-semibold mb-6 text-blue-500">Skills</h3>
+            <div className="space-y-4">
+              {skills.map((skill: string, index: number) => (
+                <div key={index} className="flex items-center space-x-4">
+                  <span className="text-lg">🚀</span>
+                  <span className="text-lg font-medium text-gray-800">{skill}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Tools Section */}
+          <div>
+            <h3 className="text-2xl font-semibold mb-6 text-green-500">Tools</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {tools.map((tool: string, index: number) => (
+                <span key={index} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm text-center">
+                  {tool}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

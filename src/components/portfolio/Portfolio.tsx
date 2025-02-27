@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import minimal from "../../assets/minimal.png";
 import modern from "../../assets/modern.png";
-import creative from "../../assets/creative.jpg";
+import creative from "../../assets/creative.png";
 import professional from "../../assets/professional.jpg";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
@@ -22,6 +22,10 @@ import ImageUpload from "./ImageUpload";
 import { ToastContainer, toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
 import Select from "react-select"; // Using react-select for multi-select dropdown
+import Minimal from "./templates/minimal";
+import Modern from "./templates/Modern";
+import Creative from "./templates/creative";
+import Modal from "react-modal";
 const Portfolio = () => {
   const [aboutMe, setAboutMe] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
@@ -52,6 +56,7 @@ const Portfolio = () => {
   const [loading, setLoading] = useState<boolean>(false); // Progress Indicator State
   const [resume, setResume] = useState<string | "">("");
   const [profileImage, setProfileImage] = useState<string | "">("");
+  const [previewTheme, setPreviewTheme] = useState<string | null>(null); // State for modal preview
 
   const navigate = useNavigate();
 
@@ -108,41 +113,46 @@ const Portfolio = () => {
           profileImage,
           blogs,
         }: any = portfolio;
-        setAboutMe(aboutMe??"");
-        setSkills(skills??[]);
-        setTools(tools??[]);
-        setProjects(projects??[
+        setAboutMe(aboutMe ?? "");
+        setSkills(skills ?? []);
+        setTools(tools ?? []);
+        setProjects(
+          projects ?? [
+            {
+              title: "",
+              description: "",
+              link: "",
+              logo: "",
+              image1: "",
+              image2: "",
+              details: "",
+              tools: [],
+            },
+          ]
+        );
 
-          {
-            title: "",
-            description: "",
-            link: "",
-            logo: "",
-            image1: "",
-            image2: "",
-            details: "",
-            tools: [],
-          },
-        ]);
-
-        setContact(contact??{
-          email: "", // Default value to user's email
-          phone: "",
-          social: { github: "", linkedin: "", twitter: "" },
-        });
-        setSelectedTheme(selectedTheme??'');
-        setWebsiteTitle(websiteTitle??"");
-        setResume(resume??'');
-        setFullName(fullName??'');
-        setYearsOfExperience(yearsOfExperience??'');
-        setProfileImage(profileImage??'');
-        setBlogs(blogs ?? [
-          {
-            title: "",
-            link: "",
-            image: "",
-          },
-        ]);
+        setContact(
+          contact ?? {
+            email: "", // Default value to user's email
+            phone: "",
+            social: { github: "", linkedin: "", twitter: "" },
+          }
+        );
+        setSelectedTheme(selectedTheme ?? "");
+        setWebsiteTitle(websiteTitle ?? "");
+        setResume(resume ?? "");
+        setFullName(fullName ?? "");
+        setYearsOfExperience(yearsOfExperience ?? "");
+        setProfileImage(profileImage ?? "");
+        setBlogs(
+          blogs ?? [
+            {
+              title: "",
+              link: "",
+              image: "",
+            },
+          ]
+        );
       } else {
         if (contact.email == "") {
           setContact({ ...contact, email: auth.currentUser?.email || "" });
@@ -253,14 +263,9 @@ const Portfolio = () => {
           project.image2 &&
           project.details
       );
-      const isBlogsValid =
+    const isBlogsValid =
       blogs.length > 0 &&
-      blogs.every(
-        (blog) =>
-          blog.title &&
-        blog.link &&
-          blog.image 
-      );
+      blogs.every((blog) => blog.title && blog.link && blog.image);
     const isContactValid =
       contact.email && contact.phone && contact.social.github;
     const isBasicInfoValid =
@@ -272,7 +277,6 @@ const Portfolio = () => {
       skills.length > 0 &&
       tools.length > 0;
     return isProjectValid && isContactValid && isBasicInfoValid && isBlogsValid;
-
   };
 
   const handleSubmit = async () => {
@@ -317,7 +321,8 @@ const Portfolio = () => {
         resume: resumeUrl !== undefined ? resumeUrl : resume,
         fullName,
         yearsOfExperience,
-        profileImage: profileImageUrl !== undefined ? profileImageUrl : profileImage,
+        profileImage:
+          profileImageUrl !== undefined ? profileImageUrl : profileImage,
         blogs,
       };
       await savePortfolio(portfolioData, user.uid);
@@ -591,11 +596,9 @@ const Portfolio = () => {
               placeholder="Blog Title"
               value={blog.title}
               onChange={(e) => {
-
                 const newBlogs = [...blogs];
                 newBlogs[index].title = e.target.value;
                 setBlogs(newBlogs);
-
               }}
             />
 
@@ -733,13 +736,32 @@ const Portfolio = () => {
               </div>
 
               <div className="flex justify-between items-center mt-4">
-                <button className="bg-green-500 text-white px-4 py-2 rounded-md">
+                <button
+                  className="bg-green-500 text-white px-4 py-2 rounded-md"
+                  onClick={() => {
+                    if ((theme.name === "Modern"|| theme.name === "Creative" ) && profileImage === "") {
+
+                      toast.error(
+                        "Please upload a profile image for this theme."
+                      );
+                    } else {
+                   
+                    if (validatePortfolio()) {
+                      setPreviewTheme(theme.name);
+                    } else {
+                      toast.error(
+                        "Please fill in all required contact fields."
+                      );
+                    }
+                  }
+                  }}
+                >
                   Live Preview
                 </button>
                 <button
                   className="text-white border border-white rounded-md px-4 py-2 hover:bg-white hover:text-gray-800 transition-colors duration-300"
                   onClick={() => {
-                    if (theme.name === "Modern" && profileImage === "") {
+                    if ((theme.name === "Modern"|| theme.name === "Creative" ) && profileImage === "") {
                       toast.error(
                         "Please upload a profile image for this theme."
                       );
@@ -757,7 +779,7 @@ const Portfolio = () => {
       </div>
 
       {/* Save Button with Progress Indicator */}
-      <div className="text-center mt-8">
+      <div className="text-center my-8">
         <button
           onClick={() => {
             if (validatePortfolio()) {
@@ -779,6 +801,85 @@ const Portfolio = () => {
           )}
         </button>
       </div>
+
+      {/* 🔥 Live Preview Modal */}
+      <Modal
+       
+       isOpen={!!previewTheme}
+       onRequestClose={() => setPreviewTheme(null)}
+       className="bg-white bg-opacity-90 p-6 md:p-8 rounded-lg w-11/12 md:w-5/6 lg:w-3/4 mx-auto mt-16 shadow-lg relative overflow-hidden max-h-[90vh] overflow-y-auto"
+       overlayClassName="fixed inset-0 bg-transparent bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ease-in-out"
+     >
+       {/* Close Button */}
+       <button
+         className="absolute top-4 right-4 text-gray-700 text-xl hover:text-red-500 transition-all"
+         onClick={() => setPreviewTheme(null)}
+       >
+         ✕
+       </button>
+     
+       {/* Content Container with Scrollability */}
+       <div className="mt-4 overflow-y-auto">
+          {previewTheme === "Minimal" && (
+            <Minimal
+              aboutMe={aboutMe}
+              skills={skills}
+              tools={tools}
+              projects={projects}
+              contact={contact}
+              resume={resume}
+              websiteTitle={websiteTitle}
+              fullName={fullName}
+              yearsOfExperience={yearsOfExperience}
+            />
+          )}
+          {previewTheme === "Modern" && (
+            <Modern
+              aboutMe={aboutMe}
+              skills={skills}
+              tools={tools}
+              projects={projects}
+              contact={contact}
+              resume={resume}
+              websiteTitle={websiteTitle}
+              fullName={fullName}
+              yearsOfExperience={yearsOfExperience}
+              profileImage={profileImage}
+              blogs={blogs}
+            />
+          )}
+          {previewTheme === "Creative" && (
+            <Creative
+              aboutMe={aboutMe}
+              skills={skills}
+              tools={tools}
+              projects={projects}
+              contact={contact}
+              resume={resume}
+              websiteTitle={websiteTitle}
+              fullName={fullName}
+              yearsOfExperience={yearsOfExperience}
+              profileImage={profileImage}
+              blogs={blogs}
+            />
+          )}
+          {previewTheme === "Professional" && (
+            <Modern
+              aboutMe={aboutMe}
+              skills={skills}
+              tools={tools}
+              projects={projects}
+              contact={contact}
+              resume={resume}
+              websiteTitle={websiteTitle}
+              fullName={fullName}
+              yearsOfExperience={yearsOfExperience}
+              profileImage={profileImage}
+              blogs={blogs}
+            />
+          )}
+        </div>
+      </Modal>
     </div>
   );
 };
