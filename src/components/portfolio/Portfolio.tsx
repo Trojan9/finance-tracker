@@ -275,9 +275,7 @@ const Portfolio = () => {
     }
   
     // Validate Blogs
-    if (blogs.length === 0) {
-      errors.push("At least one blog is required.");
-    } else {
+    if (blogs.length > 0) {
       blogs.forEach((blog, index) => {
         if (!blog.title) errors.push(`Blog ${index + 1} is missing a title.`);
         if (!blog.link) errors.push(`Blog ${index + 1} is missing a link.`);
