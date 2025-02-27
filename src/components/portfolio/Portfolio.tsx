@@ -760,8 +760,7 @@ const Portfolio = () => {
                 <button
                   className="bg-green-500 text-white px-4 py-2 rounded-md"
                   onClick={() => {
-                    if ((theme.name === "Modern"|| theme.name === "Creative" ) && profileImage === "") {
-
+                    if ((theme.name === "Modern"|| theme.name === "Creative" || theme.name === "Professional" ) && profileImage === "") {
                       toast.error(
                         "Please upload a profile image for this theme."
                       );
@@ -782,7 +781,8 @@ const Portfolio = () => {
                 <button
                   className="text-white border border-white rounded-md px-4 py-2 hover:bg-white hover:text-gray-800 transition-colors duration-300"
                   onClick={() => {
-                    if ((theme.name === "Modern"|| theme.name === "Creative" ) && profileImage === "") {
+                    if ((theme.name === "Modern"|| theme.name === "Creative" || theme.name === "Professional" ) && profileImage === "") {
+
                       toast.error(
                         "Please upload a profile image for this theme."
                       );
