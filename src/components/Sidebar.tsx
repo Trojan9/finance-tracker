@@ -11,6 +11,8 @@ import {
   FaChevronUp,
   FaChevronDown,
   FaBoxOpen,
+  FaUsers,
+  FaRobot,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -188,6 +190,38 @@ const Sidebar = ({setMenuOpen}:any) => {
                 >
                   <FaBoxOpen />
                   <span>Services</span>
+                </NavLink>
+                <NavLink
+                  to="/dashboard/clients"
+                  onClick={() => {
+                    if (window.innerWidth < 1024) { // Example: Only close if screen is smaller than 1024px
+                      setMenuOpen(false);
+                    }
+                  }}
+                  className={({ isActive }) =>
+                    `flex items-center space-x-4 p-2 rounded-md hover:text-blue-500 ${
+                      isActive ? "text-blue-500" : "text-gray-300"
+                    }`
+                  }
+                >
+                  <FaUsers />
+                  <span>Clients</span>
+                </NavLink>
+                <NavLink
+                  to="/dashboard/copilot"
+                  onClick={() => {
+                    if (window.innerWidth < 1024) { // Example: Only close if screen is smaller than 1024px
+                      setMenuOpen(false);
+                    }
+                  }}
+                  className={({ isActive }) =>
+                    `flex items-center space-x-4 p-2 rounded-md hover:text-blue-500 ${
+                      isActive ? "text-blue-500" : "text-gray-300"
+                    }`
+                  }
+                >
+                  <FaRobot />
+                  <span>CoPilot</span>
                 </NavLink>
               </div>
             )}

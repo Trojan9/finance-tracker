@@ -8,10 +8,12 @@ import Expenses from "../components/Dashboard/Expenses";
 import Trips from "../components/Dashboard/Trips";
 import Settings from "../components/Dashboard/Settings";
 import Support from "../components/Dashboard/Support";
-import Appointments from "../components/Dashboard/Appointments";
+import Appointments from "../components/Scheduling/appoinments/Appointments";
 import Portfolio from "../components/portfolio/Portfolio";
 import Services from "../components/Scheduling/Services";
-
+import Customers from "../components/Scheduling/Clients";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 const DashboardPage: React.FC = () => {
   console.log("DashboardPage");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -86,9 +88,14 @@ const DashboardPage: React.FC = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/trips" element={<Trips />} />
-          <Route path="/appointments" element={<Appointments />} />
+          <Route path="/appointments" element={<DndProvider backend={HTML5Backend}>
+      <Appointments />
+    </DndProvider>} />
+
           <Route path="/services" element={<Services />} />
-          <Route path="//portfolio" element={<Portfolio />} />
+          <Route path="/clients" element={<Customers />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/copilot" element={<Support />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/support" element={<Support />} />
           <Route path="*" element={<h1>Not Found</h1>} />

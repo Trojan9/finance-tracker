@@ -9,6 +9,7 @@ import {
   doc,
   query,
   where,
+  getDoc,
 } from "firebase/firestore";
 import { Service } from "../../api/models/service";
 import { Category } from "../../api/models/category";
@@ -29,6 +30,7 @@ const Services = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(false);
+  const [salonId, setSalonId] = useState<string | null>(null);
   const [loadingServiceId, setLoadingServiceId] = useState<string | null>(null);
   const [user, setUser] = useState(auth.currentUser);
   const [categoryFormData, setCategoryFormData] = useState({
@@ -37,14 +39,15 @@ const Services = () => {
   });
   const [serviceFormData, setServiceFormData] = useState({
     name: "",
-    price: "0",
-    duration: "0",
+    price: 0.0,
+    duration: 0,
     description: "",
-    userId: "",
+    salonId: salonId,
     categoryId: "",
-    color: "",
+    color: "#03A9F4",
     processingTimeEnabled: false,
-    processingTimes: { start: "0", processing: "0", end: "0" },
+    processingTimes: { start: 0, processing: 0, end: 0 },
+    stylistServiceMap:{}
   });
   const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
   const [editedServices, setEditedServices] = useState<{
@@ -72,9 +75,13 @@ const Services = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribeAuth = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, async(firebaseUser) => {
       if (firebaseUser) {
         setUser(firebaseUser);
+        const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
+        if (userDoc.exists()) {
+          setSalonId(userDoc.data()?.salonId);
+        }
       } else {
         console.error("User not authenticated.");
         navigate("/login");
@@ -83,6 +90,7 @@ const Services = () => {
 
     return () => unsubscribeAuth();
   }, [navigate]);
+  
 
   useEffect(() => {
     if (!user) return;
@@ -199,20 +207,29 @@ const Services = () => {
           ...serviceFormData,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          userId: user?.uid,
+          salonIdId: salonId,
+          stylistServiceMap :{
+            [user?.uid!]: {
+              duration: serviceFormData.duration,
+              price: serviceFormData.price,
+              processingTimeEnabled: serviceFormData.processingTimeEnabled,
+              processingTimes: serviceFormData.processingTimes,
+            }
+          }
         });
       }
 
       setServiceFormData({
         name: "",
-        price: "0",
-        duration: "0",
+        price: 0.0,
+        duration: 0,
         description: "",
-        userId: "",
+        salonId: salonId,
         categoryId: "",
-        color: "",
+        color: "#03A9F4",
         processingTimeEnabled: false,
-        processingTimes: { start: "0", processing: "0", end: "0" },
+        processingTimes: { start: 0, processing: 0, end: 0 },
+        stylistServiceMap:{}
       });
 
       setShowServiceModal(false);
@@ -383,7 +400,7 @@ const Services = () => {
                                 processingTimeEnabled: isChecked,
                                 processingTimes: isChecked
                                   ? s.processingTimes
-                                  : { start: "", processing: "", end: "" }, // Reset if unchecked
+                                  : { start: 0, processing: 0, end: 0 }, // Reset if unchecked
                               }
                             : s
                         )
@@ -488,14 +505,15 @@ const Services = () => {
               onClick={() => {
                 setServiceFormData({
                   name: "",
-                  price: "0",
-                  duration: "0",
+                  price: 0.0,
+                  duration: 0,
                   description: "",
-                  userId: user?.uid || "",
+                  salonId: salonId || "",
                   categoryId: category.id,
-                  color: "",
+                  color: "#03A9F4",
                   processingTimeEnabled: false,
-                  processingTimes: { start: "0", processing: "0", end: "0" },
+                  processingTimes: { start: 0, processing: 0, end: 0 },
+                  stylistServiceMap: {}
                 });
                 setShowServiceModal(true);
               }}
@@ -534,7 +552,7 @@ const Services = () => {
               onChange={(e) =>
                 setServiceFormData({
                   ...serviceFormData,
-                  price: e.target.value,
+                  price: parseInt(e.target.value),
                 })
               }
               className="p-2 rounded bg-gray-700 text-white w-full mb-2"
@@ -546,7 +564,7 @@ const Services = () => {
               onChange={(e) =>
                 setServiceFormData({
                   ...serviceFormData,
-                  duration: e.target.value,
+                  duration: parseInt(e.target.value),
                 })
               }
               className="p-2 rounded bg-gray-700 text-white w-full mb-2"
@@ -592,7 +610,7 @@ const Services = () => {
                         ...serviceFormData,
                         processingTimes: {
                           ...serviceFormData.processingTimes,
-                          start: e.target.value,
+                          start: parseInt(e.target.value),
                         },
                       })
                     }
@@ -613,7 +631,7 @@ const Services = () => {
                         ...serviceFormData,
                         processingTimes: {
                           ...serviceFormData.processingTimes,
-                          processing: e.target.value,
+                          processing: parseInt(e.target.value),
                         },
                       })
                     }
@@ -634,7 +652,7 @@ const Services = () => {
                         ...serviceFormData,
                         processingTimes: {
                           ...serviceFormData.processingTimes,
-                          end: e.target.value,
+                          end: parseInt(e.target.value),
                         },
                       })
                     }

@@ -82,6 +82,7 @@ const Settings = () => {
   const [photosUploading, setPhotosUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [salonId, setSalonId] = useState<string | null>(null);
+  
   // ✅ Dynamic Schedule
   const [selectedDate, setSelectedDate] = useState(""); // Selected date for scheduling
 
@@ -337,6 +338,7 @@ const Settings = () => {
       await fetchSalonDetails(userDoc.data().salonId);
     }
   };
+
   const saveRolesToFirestore = async () => {
     if (!selectedRole) return;
     setSaving(true);
@@ -412,6 +414,7 @@ const Settings = () => {
       setRoles(salonDoc.data().roles || []);
     }
   };
+
 
   // Handle salon creation/update
   const saveSalon = async () => {
