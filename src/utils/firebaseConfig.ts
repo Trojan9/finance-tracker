@@ -13,6 +13,7 @@ const firebaseConfig = {
     // measurementId: "G-846YPSLLY3"
     apiKey: "AIzaSyCP51qDrQTHIloKsMJH7Qh3comKqQfGIfc",
   authDomain: "airplay-c007d.firebaseapp.com",
+  databaseURL: "https://airplay-c007d.firebaseio.com",
   projectId: "airplay-c007d",
   storageBucket: "airplay-c007d.appspot.com",
   messagingSenderId: "254970112011",
