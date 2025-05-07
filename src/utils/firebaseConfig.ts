@@ -3,22 +3,21 @@ import { getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWith
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAo5iVUyfEfY2fA79fULKMKz0vFdCQi1xE",
-    authDomain: "vibez-2120e.firebaseapp.com",
-    databaseURL: "https://vibez-2120e.firebaseio.com",
-    projectId: "vibez-2120e",
-    storageBucket: "vibez-2120e.appspot.com",
-    messagingSenderId: "902893329566",
-    appId: "1:902893329566:web:7e9484bd398275a603af8f",
-    measurementId: "G-846YPSLLY3"
-    // apiKey: "AIzaSyDdQdCh-aUdHC34cNxSUiB2P9j4Cp7yX7w",
-    // authDomain: "geynius-d495d.firebaseapp.com",
-    // projectId: "geynius-d495d",
-    // storageBucket: "geynius-d495d.appspot.com",
-    // messagingSenderId: "1092792481266",
-    // appId: "1:1092792481266:web:c2bcc6cffe495ab941276b",
-    // measurementId: "G-J5MEXDELJQ"
-
+    // apiKey: "AIzaSyAo5iVUyfEfY2fA79fULKMKz0vFdCQi1xE",
+    // authDomain: "vibez-2120e.firebaseapp.com",
+    // databaseURL: "https://vibez-2120e.firebaseio.com",
+    // projectId: "vibez-2120e",
+    // storageBucket: "vibez-2120e.appspot.com",
+    // messagingSenderId: "902893329566",
+    // appId: "1:902893329566:web:7e9484bd398275a603af8f",
+    // measurementId: "G-846YPSLLY3"
+    apiKey: "AIzaSyCP51qDrQTHIloKsMJH7Qh3comKqQfGIfc",
+  authDomain: "airplay-c007d.firebaseapp.com",
+  projectId: "airplay-c007d",
+  storageBucket: "airplay-c007d.appspot.com",
+  messagingSenderId: "254970112011",
+  appId: "1:254970112011:web:6612c3ae4bfc088397bf0e",
+  measurementId: "G-TLDQQGV7B5"
 
   };
 
